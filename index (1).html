@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marrocos Lanches - Delivery Online</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0c0908;
+            --card-bg: #16110f;
+            --primary-color: #6b3410;
+            --secondary-color: #9c4f1c;
+            --accent-color: #f6ad55;
+            --text-color: #f7fafc;
+            --text-muted: #b5aba4;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 120px;
+        }
+
+        header {
+            position: relative;
+            background: linear-gradient(180deg, rgba(20, 10, 5, 0.85) 0%, rgba(12, 9, 8, 0.98) 100%), 
+                        url('https://i.ibb.co/20kZPQcg/banner.jpg') center/cover no-repeat;
+            padding: 25px 15px;
+            text-align: center;
+            border-bottom: 3px solid var(--secondary-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            object-fit: cover;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.1rem;
+            color: var(--accent-color);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        header p {
+            margin: 0;
+            font-size: 0.82rem;
+            color: #ffffff;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header-address {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        .category-title {
+            font-size: 1.15rem;
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 6px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .banner-tele {
+            background: rgba(156, 79, 28, 0.2);
+            border: 1px dashed var(--accent-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .totem-card {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(156, 79, 28, 0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .totem-card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .totem-card.indisponivel {
+            opacity: 0.4;
+            filter: grayscale(1);
+            position: relative;
+        }
+
+        .totem-card.indisponivel::after {
+            content: "ESGOTADO / INDISPONÍVEL";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #d97706;
+            color: #fff;
+            font-weight: 900;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .totem-img {
+            width: 95px; 
+            height: 95px; 
+            border-radius: 10px; 
+            object-fit: cover;
+            border: 2px solid var(--accent-color); 
+            flex-shrink: 0;
+        }
+
+        .totem-content { flex-grow: 1; }
+        .totem-info h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 800; color: #fff; }
+        .totem-info p { margin: 0 0 6px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.35; }
+        .totem-preco { font-size: 0.95rem; font-weight: 900; color: var(--accent-color); margin-bottom: 8px; }
+
+        .totem-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-totem {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;
+            font-weight: bold; font-size: 0.82rem;
+        }
+
+        body.modo-lojista-ativo .admin-controls {
+            display: flex !important;
+        }
+
+        .admin-controls {
+            display: none;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--secondary-color);
+            flex-wrap: wrap;
+        }
+
+        .btn-admin {
+            background: #231510;
+            border: 1px solid var(--accent-color);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .input-delivery {
+            width: 100%;
+            background: #0f0a08;
+            border: 1px solid #3d2214;
+            color: #fff;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            box-sizing: border-box;
+        }
+
+        .modal-totem {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.88); z-index: 10000; justify-content: center; align-items: center;
+            padding: 15px; box-sizing: border-box;
+        }
+        .modal-box {
+            background: #181210; border: 2px solid var(--secondary-color); border-radius: 14px;
+            width: 100%; max-width: 480px; padding: 20px; max-height: 85vh; overflow-y: auto;
+            box-sizing: border-box;
+        }
+        .modal-box h2 { margin: 0 0 6px; color: var(--accent-color); font-size: 1.25rem; }
+        .ingrediente-linha {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .ingrediente-nome { font-size: 0.9rem; font-weight: bold; color: #fff; }
+        .ingrediente-controles { display: flex; align-items: center; gap: 12px; }
+        .btn-qtd {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .btn-menos { background: #3a2015; color: #ff6b6b; border: 1px solid #7c2d12; }
+        .btn-mais { background: #1b4d2e; color: #51cf66; border: 1px solid #14532d; }
+        .qtd-numero { font-weight: bold; font-size: 1rem; min-width: 18px; text-align: center; color: #fff; }
+
+        .btn-confirmar-lanche {
+            width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff; border: none; padding: 13px; border-radius: 8px;
+            font-size: 0.95rem; font-weight: 900; margin-top: 20px; cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn-fechar-modal {
+            background: #3a2015; color: #ff6b6b; border: 1px solid #7c2d12;
+            padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; float: right;
+        }
+
+        .checkout-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #0f0a08; border: 1px solid #3d2214; padding: 10px;
+            border-radius: 8px; margin-bottom: 8px;
+        }
+        .checkout-item-nome { font-size: 0.88rem; font-weight: bold; color: #fff; text-align: left; }
+        .checkout-item-preco { font-size: 0.85rem; color: var(--accent-color); font-weight: bold; }
+        .btn-remover-item {
+            background: #3a2015; color: #ff6b6b; border: 1px solid #7c2d12;
+            padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;
+        }
+
+        .form-group { margin-bottom: 12px; text-align: left; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
+
+        .cart-bar {
+            position: fixed !important; bottom: 0 !important; left: 0 !important; width: 100% !important;
+            background-color: rgba(18, 11, 8, 0.98); border-top: 2px solid var(--secondary-color);
+            padding: 12px 18px; display: flex !important; justify-content: space-between !important;
+            align-items: center !important; box-sizing: border-box; z-index: 99999 !important;
+        }
+        .cart-total { font-size: 1rem; font-weight: 900; color: var(--accent-color); }
+        .btn-checkout {
+            background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border: none;
+            padding: 10px 18px; border-radius: 8px; font-weight: 900; font-size: 0.9rem; cursor: pointer;
+        }
+        .btn-lojista {
+            background: #3a2015; border: 1px solid var(--secondary-color); color: var(--accent-color);
+            padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; cursor: pointer;
+        }
+        .btn-lojista.ativo { background: #16a34a; color: #fff; border-color: #22c55e; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://i.ibb.co/60MktQYF/logo.jpg" class="header-logo" alt="Logo Marrocos Lanches">
+        <h1>Marrocos Lanches</h1>
+        <p>Delivery & Retirada</p>
+        <div class="header-address">📍 Rua Luiz Inácio Dutra, 457</div>
+    </header>
+
+    <div class="container" id="containerPrincipal">
+        
+        <div class="banner-tele">
+            <span>🛵 Taxa de Tele-entrega:</span>
+            <span id="txtTaxaTele" style="color: var(--accent-color);">R$ 5,00</span>
+        </div>
+
+        <!-- PAINEL DE AÇÕES EXCLUSIVO DO LOJISTA -->
+        <div id="painelCriarProduto" style="display: none; margin-bottom: 20px; text-align: center;">
+            <button class="btn-confirmar-lanche" onclick="abrirModalNovoProduto()" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); margin-top: 0; padding: 10px;">
+                ➕ Cadastrar Novo Produto
+            </button>
+            <button class="btn-confirmar-lanche" onclick="alterarTaxaTeleLojista()" style="background: linear-gradient(135deg, #d97706, #b45309); margin-top: 8px; padding: 10px;">
+                🛵 Alterar Taxa de Tele
+            </button>
+            <button class="btn-confirmar-lanche" onclick="gerenciarPrecosAdicionais()" style="background: linear-gradient(135deg, #7c3aed, #6d28d9); margin-top: 8px; padding: 10px;">
+                ⚙️ Gerenciar Preços de Adicionais
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MODAL DE VISUALIZAÇÃO GRANDE DA FOTO E DETALHES -->
+    <div id="modalVisualizarProduto" class="modal-totem">
+        <div class="modal-box" style="text-align: center;">
+            <button class="btn-fechar-modal" onclick="fecharModalVisualizar()">✕ Fechar</button>
+            <h2 id="viewProdNome" style="margin-top: 10px;">Nome do Lanche</h2>
+            <img id="viewProdImg" src="" style="width: 100%; max-height: 250px; border-radius: 10px; object-fit: cover; border: 2px solid var(--accent-color); margin: 12px 0;" alt="Foto Ampliada">
+            <p id="viewProdDesc" style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; text-align: left; background: #0f0a08; padding: 10px; border-radius: 8px; border: 1px solid #3d2214;"></p>
+            <div id="viewProdPrecos" style="font-size: 1.1rem; font-weight: 900; color: var(--accent-color); margin: 15px 0;"></div>
+            <button id="viewProdBtnPedir" class="btn-confirmar-lanche" style="margin-top: 0;">🛠️ Personalizar e Pedir</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE CUSTOMIZAÇÃO DO LANCHE -->
+    <div id="modalTotem" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalTotem()">✕ Fechar</button>
+            <h2 id="modalTotemTitulo">Personalizar Lanche</h2>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ajuste os ingredientes abaixo:</p>
+            
+            <div id="modalTotemIngredientes"></div>
+
+            <div style="margin-top: 15px;">
+                <label style="font-size: 0.8rem; color: var(--accent-color); font-weight: bold; display: block; margin-bottom: 5px;">Observações:</label>
+                <input type="text" id="modalObservacao" class="input-delivery" placeholder="Ex: Sem cebola, caprichar na maionese...">
+            </div>
+
+            <button class="btn-confirmar-lanche" onclick="adicionarAoCarrinhoTotem()">Confirmar e Adicionar</button>
+        </div>
+    </div>
+
+    <!-- MODAL CADASTRAR NOVO PRODUTO -->
+    <div id="modalNovoProduto" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalNovoProduto()">✕ Fechar</button>
+            <h2>Cadastrar Novo Produto</h2>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Categoria:</label>
+                <select id="novoProdCategoria" class="input-delivery" onchange="verificarNovaCategoria(this)">
+                    <option value="Lanches & Xis">🍔 Lanches & Xis</option>
+                    <option value="Mini Xis Doces">🍫 Mini Xis Doces</option>
+                    <option value="Cachorro-Quente & Torradas">🌭 Cachorro-Quente & Torradas</option>
+                    <option value="Porções Caprichadas">🍟 Porções Caprichadas</option>
+                    <option value="Pratos à La Carte">🍽️ Pratos à La Carte</option>
+                    <option value="NOVA_CATEGORIA">➕ Criar Nova Categoria...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Nome do Produto:</label>
+                <input type="text" id="novoProdNome" class="input-delivery" placeholder="Ex: Xis Especial">
+            </div>
+            <div class="form-group">
+                <label>Descrição / Ingredientes:</label>
+                <input type="text" id="novoProdDesc" class="input-delivery" placeholder="Ex: Pão, bife, queijo, alface...">
+            </div>
+            <div class="form-group">
+                <label>Preço Grande / Único (R$):</label>
+                <input type="number" step="0.50" id="novoProdPrecoGrande" class="input-delivery" placeholder="Ex: 30.00">
+            </div>
+            <div class="form-group">
+                <label>Preço Mini (Opcional - deixe vazio se não tiver):</label>
+                <input type="number" step="0.50" id="novoProdPrecoMini" class="input-delivery" placeholder="Ex: 25.00">
+            </div>
+            <div class="form-group">
+                <label>Link da Foto (URL):</label>
+                <input type="text" id="novoProdImg" class="input-delivery" placeholder="Cole o link da imagem aqui">
+            </div>
+            <button class="btn-confirmar-lanche" onclick="salvarNovoProdutoBanco()">Salvar na Nuvem</button>
+        </div>
+    </div>
+    <!-- MODAL DE EDITAR PREÇOS E DADOS -->
+    <div id="modalEditarProduto" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalEditarProduto()">✕ Fechar</button>
+            <h2>Editar Produto</h2>
+            <input type="hidden" id="editProdIdKey">
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Categoria:</label>
+                <input type="text" id="editProdCategoria" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Nome do Produto:</label>
+                <input type="text" id="editProdNome" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Descrição / Ingredientes:</label>
+                <input type="text" id="editProdDesc" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Preço Grande / Único (R$):</label>
+                <input type="number" step="0.50" id="editProdPrecoGrande" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Preço Mini (R$):</label>
+                <input type="number" step="0.50" id="editProdPrecoMini" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Link da Foto (URL):</label>
+                <input type="text" id="editProdImg" class="input-delivery">
+            </div>
+            <button class="btn-confirmar-lanche" onclick="salvarEdicaoProdutoBanco()">Atualizar na Nuvem</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE GERENCIAR PREÇOS DOS ADICIONAIS -->
+    <div id="modalAdicionais" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalAdicionais()">✕ Fechar</button>
+            <h2>⚙️ Gerenciar Adicionais</h2>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Altere os valores cobrados por cada ingrediente extra:</p>
+            
+            <div id="listaAdicionaisAdmin" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;"></div>
+
+            <div style="border-top: 1px solid #333; padding-top: 10px;">
+                <p style="font-size: 0.8rem; color: var(--accent-color); font-weight: bold; margin-bottom: 5px;">Adicionar Novo Ingrediente Extra:</p>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="novoAdcNome" class="input-delivery" placeholder="Nome (Ex: Cheddar)" style="flex: 2;">
+                    <input type="number" step="0.50" id="novoAdcPreco" class="input-delivery" placeholder="Preço R$" style="flex: 1;">
+                    <button class="btn-totem" onclick="cadastrarNovoAdicional()" style="padding: 8px 12px;">➕</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CARRINHO / CHECKOUT -->
+    <div id="modalCarrinho" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalCarrinho()">✕ Fechar</button>
+            <h2>🛒 Seu Carrinho</h2>
+            <div id="listaItensCarrinho" style="max-height: 200px; overflow-y: auto; margin: 10px 0;"></div>
+            
+            <div style="border-top: 1px solid #333; padding-top: 10px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;">
+                    <span>Subtotal:</span>
+                    <span id="carrinhoSubtotal">R$ 0,00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;">
+                    <span>Taxa de Tele-entrega:</span>
+                    <span id="carrinhoTaxa">R$ 5,00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 1.05rem; font-weight: 900; color: var(--accent-color);">
+                    <span>Total Geral:</span>
+                    <span id="carrinhoTotalGeral">R$ 0,00</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Seu Nome:</label>
+                <input type="text" id="clienteNome" class="input-delivery" placeholder="Digite seu nome completo">
+            </div>
+
+            <div class="form-group">
+                <label>Forma de Entrega:</label>
+                <select id="tipoEntrega" class="input-delivery" onchange="alternarCamposEntrega()">
+                    <option value="tele">🛵 Tele-entrega</option>
+                    <option value="retirada">🏃 Retirada no Local</option>
+                </select>
+            </div>
+
+            <div id="camposEndereco">
+                <div class="form-group">
+                    <label>Endereço (Rua e Número):</label>
+                    <input type="text" id="clienteRua" class="input-delivery" placeholder="Ex: Rua Principal, 123">
+                </div>
+                <div class="form-group">
+                    <label>Bairro:</label>
+                    <input type="text" id="clienteBairro" class="input-delivery" placeholder="Digite seu bairro">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Forma de Pagamento:</label>
+                <select id="formaPagamento" class="input-delivery" onchange="alternarTroco()">
+                    <option value="Pix">Pix</option>
+                    <option value="Cartao Credito">Cartão de Crédito</option>
+                    <option value="Cartao Debito">Cartão de Débito</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="grupoTroco" style="display: none;">
+                <label>Precisa de troco para quanto?</label>
+                <input type="text" id="clienteTroco" class="input-delivery" placeholder="Ex: Troco para R$ 50,00">
+            </div>
+
+            <button class="btn-confirmar-lanche" onclick="finalizarPedidoWhatsApp()">Enviar Pedido no WhatsApp 📱</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE SENHA DO LOJISTA -->
+    <div id="modalSenhaLojista" class="modal-totem">
+        <div class="modal-box" style="max-width: 320px; text-align: center;">
+            <button class="btn-fechar-modal" onclick="fecharModalSenha()">✕</button>
+            <h2>🔒 Área do Lojista</h2>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Digite a senha de acesso:</p>
+            <div class="form-group">
+                <input type="password" id="senhaLojistaInput" class="input-delivery" placeholder="Senha" style="text-align: center; letter-spacing: 2px;">
+            </div>
+            <button class="btn-confirmar-lanche" onclick="validarSenhaLojista()" style="margin-top: 10px;">Entrar</button>
+        </div>
+    </div>
+
+    <!-- BARRA INFERIOR FIXA DO CARRINHO -->
+    <div class="cart-bar">
+        <div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">VALOR TOTAL</div>
+            <div class="cart-total" id="txtTotalBarra">R$ 0,00</div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn-lojista" id="btnModoLojista" onclick="tentarAtivarModoLojista()">🔑 Lojista</button>
+            <button class="btn-checkout" onclick="abrirCarrinho()">🛒 Ver Carrinho (<span id="qtdItensBarra">0</span>)</button>
+        </div>
+    </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbYlLMcr-1hUPL60oKBzT5af2SMOJ2-uw",
+            authDomain: "marrocos-lanches.firebaseapp.com",
+            databaseURL: "https://marrocos-lanches-default-rtdb.firebaseio.com",
+            projectId: "marrocos-lanches",
+            storageBucket: "marrocos-lanches.firebasestorage.app",
+            messagingSenderId: "593825096355",
+            appId: "1:593825096355:web:2b81677818d7fbb1609516",
+            measurementId: "G-Z8CZ3L551X"
+        };
+        
+        let db = null;
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch(e) { console.log("Erro Firebase:", e); }
+
+        let carrinho = [];
+        let taxaTele = 5.00;
+        let lancheAtual = null;
+
+        let precosAdicionais = {
+            "Bife": 6.00, "Ovo": 3.00, "Bacon": 5.00, "Presunto": 3.00, 
+            "Queijo": 4.00, "Milho": 2.00, "Ervilha": 2.00, "Tomate": 2.00, 
+            "Alface": 2.00, "Coração": 7.00, "Salsicha": 3.00
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!db) return;
+
+            if (sessionStorage.getItem('modoLojistaAtivo') === 'true') {
+                ativarModoLojistaVisualmente();
+            }
+
+            db.ref('config/taxaTele').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    taxaTele = snapshot.val();
+                    document.getElementById('txtTaxaTele').innerText = "R$ " + taxaTele.toFixed(2).replace('.', ',');
+                }
+            });
+
+            db.ref('config/precosAdicionais').on('value', (snapshot) => {
+                if (snapshot.exists()) precosAdicionais = snapshot.val();
+            });
+
+            db.ref('produtos').on('value', (snapshot) => {
+                let containerPrincipal = document.getElementById('containerPrincipal');
+                let categoriasAntigas = containerPrincipal.querySelectorAll('.categoria-bloco');
+                categoriasAntigas.forEach(e => e.remove());
+
+                if (!snapshot.exists()) return;
+
+                let produtosPorCategoria = {};
+
+                snapshot.forEach((childSnapshot) => {
+                    let idKey = childSnapshot.key;
+                    let p = childSnapshot.val();
+                    let cat = p.categoria || "Lanches & Xis";
+
+                    if (!produtosPorCategoria[cat]) produtosPorCategoria[cat] = [];
+                    produtosPorCategoria[cat].push({ idKey, ...p });
+                });
+
+                let isLojistaAtivo = sessionStorage.getItem('modoLojistaAtivo') === 'true' || document.body.classList.contains('modo-lojista-ativo');
+
+                for (let cat in produtosPorCategoria) {
+                    let catId = "cat_" + cat.replace(/[^a-zA-Z0-9]/g, '_');
+                    let catDiv = document.createElement('div');
+                    catDiv.className = 'categoria-bloco';
+                    catDiv.id = catId;
+                    
+                    let htmlCat = `<div class="category-title" style="margin-top:25px;">${cat}</div>`;
+                    
+                    produtosPorCategoria[cat].forEach(p => {
+                        let classePausado = (p.pausado === true || p.pausado === "true") ? ' indisponivel' : '';
+                        let ingredientesArray = p.desc ? p.desc.split(',').map(i => i.trim()) : ["Bife", "Queijo"];
+                        let ingredientesStr = JSON.stringify(ingredientesArray).replace(/"/g, '&quot;');
+                        let precoMiniVal = p.precoM ? p.precoM : 0;
+                        let imgSafe = p.img || '';
+                        let descSafe = (p.desc || '').replace(/'/g, "&#39;");
+                        let nomeSafe = (p.nome || '').replace(/'/g, "&#39;");
+                        let catSafe = cat.replace(/'/g, "&#39;");
+                        
+                        let botoesAcao = `<button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe}', ${p.precoG}, ${ingredientesStr}, '${imgSafe}')">🛠️ Pedir (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>`;
+                        if(p.precoM && p.precoM > 0) {
+                            botoesAcao = `
+                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Grande)', ${p.precoG}, ${ingredientesStr}, '${imgSafe}')">🛠️ Grande (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>
+                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Mini)', ${p.precoM}, ${ingredientesStr}, '${imgSafe}')">🛠️ Mini (R$ ${Number(p.precoM).toFixed(2).replace('.', ',')})</button>
+                            `;
+                        }
+
+                        let precoTexto = (p.precoM && p.precoM > 0) ? `Grande: R$ ${Number(p.precoG).toFixed(2)} | Mini: R$ ${Number(p.precoM).toFixed(2)}` : `Valor: R$ ${Number(p.precoG).toFixed(2)}`;
+
+                        let styleAdmin = isLojistaAtivo ? "display:flex;" : "display:none;";
+                        let controlesAdminHTML = `
+                            <div class="admin-controls" style="${styleAdmin}" onclick="event.stopPropagation()">
+                                <button class="btn-admin" onclick="abrirModalEditarProduto('${p.idKey}', '${catSafe}', '${nomeSafe}', '${descSafe}', ${p.precoG}, ${precoMiniVal}, '${imgSafe}')">✏️ Editar / Preços</button>
+                                <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
+                                <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
+                            </div>
+                        `;
+
+                        htmlCat += `
+                            <div class="totem-card${classePausado}" data-firebase-id="${p.idKey}" onclick="abrirModalVisualizar('${nomeSafe}', '${descSafe}', '${imgSafe}', ${p.precoG}, ${precoMiniVal}, ${ingredientesStr})">
+                                <img src="${imgSafe}" class="totem-img" alt="${nomeSafe}">
+                                <div class="totem-content">
+                                    <div class="totem-info">
+                                        <h3>${p.nome}</h3>
+                                        <p>${p.desc}</p>
+                                        <div class="totem-preco">${precoTexto}</div>
+                                    </div>
+                                    <div class="totem-actions">
+                                        ${botoesAcao}
+                                    </div>
+                                    ${controlesAdminHTML}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    catDiv.innerHTML = htmlCat;
+                    containerPrincipal.appendChild(catDiv);
+                }
+            });
+        });
+
+        function ativarModoLojistaVisualmente() {
+            document.body.classList.add('modo-lojista-ativo');
+            let painel = document.getElementById('painelCriarProduto');
+            if(painel) painel.style.display = 'block';
+            
+            let btn = document.getElementById('btnModoLojista');
+            if(btn) {
+                btn.classList.add('ativo');
+                btn.innerText = "🔓 Lojista Ativo";
+            }
+
+            document.querySelectorAll('.admin-controls').forEach(el => {
+                el.style.display = 'flex';
+            });
+        }
+    </script>
+    <script>
+        function abrirModalVisualizar(nome, desc, img, precoG, precoM, ingredientesArray) {
+            document.getElementById('viewProdNome').innerText = nome;
+            document.getElementById('viewProdImg').src = img;
+            document.getElementById('viewProdDesc').innerText = desc ? "Ingredientes: " + desc : "Sem descrição detalhada.";
+            
+            let textoPrecos = `Preço Grande / Único: R$ ${Number(precoG).toFixed(2).replace('.', ',')}`;
+            if(precoM && precoM > 0) {
+                textoPrecos += `<br>Preço Mini: R$ ${Number(precoM).toFixed(2).replace('.', ',')}`;
+            }
+            document.getElementById('viewProdPrecos').innerHTML = textoPrecos;
+            
+            let btnPedir = document.getElementById('viewProdBtnPedir');
+            btnPedir.onclick = function() {
+                fecharModalVisualizar();
+                abrirTotemLanche(nome, precoG, ingredientesArray, img);
+            };
+
+            document.getElementById('modalVisualizarProduto').style.display = 'flex';
+        }
+
+        function fecharModalVisualizar() {
+            document.getElementById('modalVisualizarProduto').style.display = 'none';
+        }
+
+        function abrirTotemLanche(nome, preco, ingredientes, img) {
+            lancheAtual = { 
+                nome, 
+                precoBase: preco, 
+                precoCalculado: preco, 
+                ingredientes: ingredientes.map(ing => ({ nome: ing, qtd: 1 })), 
+                img 
+            };
+            document.getElementById('modalTotemTitulo').innerText = nome + " - R$ " + preco.toFixed(2).replace('.', ',');
+            document.getElementById('modalObservacao').value = "";
+            renderizarIngredientesModal();
+            document.getElementById('modalTotem').style.display = 'flex';
+        }
+
+        function renderizarIngredientesModal() {
+            let html = "";
+            let valorExtraTotal = 0;
+
+            lancheAtual.ingredientes.forEach((item, index) => {
+                let precoUnitario = precosAdicionais[item.nome] || 3.00;
+                if (item.qtd > 1) valorExtraTotal += (item.qtd - 1) * precoUnitario;
+
+                html += `
+                    <div class="ingrediente-linha">
+                        <span class="ingrediente-nome">${item.nome} <small style="color:var(--accent-color);">(+R$ ${precoUnitario.toFixed(2).replace('.', ',')})</small></span>
+                        <div class="ingrediente-controles">
+                            <button class="btn-qtd btn-menos" onclick="mudarQtdIngrediente(${index}, -1)">-</button>
+                            <span class="qtd-numero">${item.qtd}</span>
+                            <button class="btn-qtd btn-mais" onclick="mudarQtdIngrediente(${index}, +1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            lancheAtual.precoCalculado = lancheAtual.precoBase + valorExtraTotal;
+            document.getElementById('modalTotemTitulo').innerText = lancheAtual.nome + " - R$ " + lancheAtual.precoCalculado.toFixed(2).replace('.', ',');
+            document.getElementById('modalTotemIngredientes').innerHTML = html;
+        }
+
+        function mudarQtdIngrediente(index, delta) {
+            lancheAtual.ingredientes[index].qtd += delta;
+            if (lancheAtual.ingredientes[index].qtd < 0) lancheAtual.ingredientes[index].qtd = 0;
+            if (lancheAtual.ingredientes[index].qtd > 4) lancheAtual.ingredientes[index].qtd = 4;
+            renderizarIngredientesModal();
+        }
+
+        function fecharModalTotem() {
+            document.getElementById('modalTotem').style.display = 'none';
+        }
+
+        function adicionarAoCarrinhoTotem() {
+            if (!lancheAtual) return;
+            let obs = document.getElementById('modalObservacao').value;
+            let retirados = [];
+            let extras = [];
+            
+            lancheAtual.ingredientes.forEach(item => {
+                if (item.qtd === 0) retirados.push("SEM " + item.nome.toUpperCase());
+                if (item.qtd > 1) extras.push(`EXTRA ${item.nome.toUpperCase()} (x${item.qtd - 1})`);
+            });
+
+            let modificacoes = retirados.concat(extras);
+            let nomeFinal = lancheAtual.nome + (modificacoes.length > 0 ? " [" + modificacoes.join(", ") + "]" : "");
+
+            carrinho.push({ nome: nomeFinal, precoBase: lancheAtual.precoCalculado, observacao: obs });
+            atualizarCarrinhoBarra();
+            fecharModalTotem();
+            alert("Adicionado ao carrinho com sucesso! 🛒");
+        }
+
+        function atualizarCarrinhoBarra() {
+            let total = 0;
+            carrinho.forEach(item => total += item.precoBase);
+            document.getElementById('txtTotalBarra').innerText = "R$ " + total.toFixed(2).replace('.', ',');
+            document.getElementById('qtdItensBarra').innerText = carrinho.length;
+        }
+
+        function abrirCarrinho() {
+            let html = "";
+            let subtotal = 0;
+            if (carrinho.length === 0) {
+                html = "<p style='text-align:center; color:var(--text-muted); padding:20px;'>Seu carrinho está vazio!</p>";
+            } else {
+                carrinho.forEach((item, index) => {
+                    subtotal += item.precoBase;
+                    html += `
+                        <div class="checkout-item">
+                            <div>
+                                <div class="checkout-item-nome">${item.nome}</div>
+                                <div class="checkout-item-preco">R$ ${item.precoBase.toFixed(2).replace('.', ',')}</div>
+                            </div>
+                            <button class="btn-remover-item" onclick="removerItemCarrinho(${index})">Remover</button>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('listaItensCarrinho').innerHTML = html;
+            document.getElementById('carrinhoSubtotal').innerText = "R$ " + subtotal.toFixed(2).replace('.', ',');
+            
+            let tipoEnt = document.getElementById('tipoEntrega').value;
+            let taxaAtual = (tipoEnt === 'tele') ? taxaTele : 0;
+            document.getElementById('carrinhoTaxa').innerText = "R$ " + taxaAtual.toFixed(2).replace('.', ',');
+            document.getElementById('carrinhoTotalGeral').innerText = "R$ " + (subtotal + taxaAtual).toFixed(2).replace('.', ',');
+
+            document.getElementById('modalCarrinho').style.display = 'flex';
+        }
+
+        function removerItemCarrinho(index) {
+            carrinho.splice(index, 1);
+            atualizarCarrinhoBarra();
+            abrirCarrinho();
+        }
+
+        function fecharModalCarrinho() {
+            document.getElementById('modalCarrinho').style.display = 'none';
+        }
+
+        function alternarCamposEntrega() {
+            let tipo = document.getElementById('tipoEntrega').value;
+            document.getElementById('camposEndereco').style.display = (tipo === 'tele') ? 'block' : 'none';
+            abrirCarrinho();
+        }
+
+        function alternarTroco() {
+            let pag = document.getElementById('formaPagamento').value;
+            document.getElementById('grupoTroco').style.display = (pag === 'Dinheiro') ? 'block' : 'none';
+        }
+
+        function finalizarPedidoWhatsApp() {
+            let nome = document.getElementById('clienteNome').value.trim();
+            if(!nome) { alert("Por favor, digite seu nome!"); return; }
+            if(carrinho.length === 0) { alert("Seu carrinho está vazio!"); return; }
+
+            let tipoEnt = document.getElementById('tipoEntrega').value;
+            let enderecoTexto = "";
+            let taxaAtual = 0;
+
+            if(tipoEnt === 'tele') {
+                let rua = document.getElementById('clienteRua').value.trim();
+                let bairro = document.getElementById('clienteBairro').value.trim();
+                if(!rua || !bairro) { alert("Preencha o endereço e o bairro para entrega!"); return; }
+                enderecoTexto = `*Endereço:* ${rua}, ${bairro}`;
+                taxaAtual = taxaTele;
+            } else {
+                enderecoTexto = `*Retirada no Local*`;
+            }
+
+            let pag = document.getElementById('formaPagamento').value;
+            let troco = document.getElementById('clienteTroco').value.trim();
+            let subtotal = 0;
+            let mensagem = `🍔 *NOVO PEDIDO - MARROCOS LANCHES* 🍔\n\n*Cliente:* ${nome}\n${enderecoTexto}\n\n*Itens do Pedido:* \n`;
+
+            carrinho.forEach((item, idx) => {
+                subtotal += item.precoBase;
+                mensagem += `${idx + 1}. ${item.nome} - R$ ${item.precoBase.toFixed(2).replace('.', ',')}\n`;
+                if(item.observacao) mensagem += `   _Obs: ${item.observacao}_\n`;
+            });
+
+            let totalGeral = subtotal + taxaAtual;
+            mensagem += `\n*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            if(tipoEnt === 'tele') mensagem += `\n*Taxa de Entrega:* R$ ${taxaAtual.toFixed(2).replace('.', ',')}`;
+            mensagem += `\n*TOTAL GERAL:* R$ ${totalGeral.toFixed(2).replace('.', ',')}`;
+            mensagem += `\n\n*Pagamento:* ${pag}`;
+            if(pag === 'Dinheiro' && troco) mensagem += `\n*Troco para:* ${troco}`;
+
+            let foneLoja = "5554999448139";
+            let urlWp = `https://api.whatsapp.com/send?phone=${foneLoja}&text=` + encodeURIComponent(mensagem);
+            window.open(urlWp, '_blank');
+        }
+
+        function tentarAtivarModoLojista() {
+            if(document.body.classList.contains('modo-lojista-ativo')) {
+                sessionStorage.removeItem('modoLojistaAtivo');
+                document.body.classList.remove('modo-lojista-ativo');
+                document.getElementById('painelCriarProduto').style.display = 'none';
+                let btn = document.getElementById('btnModoLojista');
+                btn.classList.remove('ativo');
+                btn.innerText = "🔑 Lojista";
+                location.reload();
+            } else {
+                document.getElementById('modalSenhaLojista').style.display = 'flex';
+            }
+        }
+
+        function fecharModalSenha() {
+            document.getElementById('modalSenhaLojista').style.display = 'none';
+        }
+
+        function validarSenhaLojista() {
+            let senhaInput = document.getElementById('senhaLojistaInput');
+            if (!senhaInput) return;
+            let senha = senhaInput.value.trim();
+            
+            if(senha === "Kevinmarrocos2027" || senha.toLowerCase() === "kevinmarrocos2027") {
+                sessionStorage.setItem('modoLojistaAtivo', 'true');
+                ativarModoLojistaVisualmente();
+                fecharModalSenha();
+                senhaInput.value = "";
+                alert("Modo Lojista ativado com sucesso!");
+            } else {
+                alert("Senha incorreta!");
+            }
+        }
+
+        function alternarPausaCard(btn) {
+            let card = btn.closest('.totem-card');
+            let idKey = card.getAttribute('data-firebase-id');
+            let jaPausado = card.classList.contains('indisponivel');
+            let novoEstadoPausa = !jaPausado;
+
+            if (idKey && db) {
+                db.ref('produtos/' + idKey).child('pausado').set(novoEstadoPausa).then(() => {
+                    if (novoEstadoPausa) {
+                        card.classList.add('indisponivel');
+                        alert("Produto pausado com sucesso na nuvem!");
+                    } else {
+                        card.classList.remove('indisponivel');
+                        alert("Produto reativado com sucesso!");
+                    }
+                }).catch((error) => {
+                    alert("Erro ao pausar no Firebase: " + error.message);
+                });
+            } else {
+                alert("Erro: ID do produto não encontrado.");
+            }
+        }
+
+        function excluirProdutoCard(btn) {
+            let card = btn.closest('.totem-card');
+            let idKey = card.getAttribute('data-firebase-id');
+            
+            if (confirm("Tem certeza absoluta que deseja excluir este produto do banco de dados?")) {
+                if (idKey && db) {
+                    db.ref('produtos/' + idKey).remove().then(() => {
+                        card.remove();
+                        alert("Produto excluído do banco de dados e removido da tela!");
+                    }).catch((error) => {
+                        alert("Erro ao excluir no Firebase: " + error.message);
+                    });
+                } else {
+                    alert("Erro: ID do produto não encontrado.");
+                }
+            }
+        }
+
+        function alterarTaxaTeleLojista() {
+            let novaTaxa = prompt("Digite a nova Taxa de Entrega (Ex: 7.00):", taxaTele);
+            if(novaTaxa !== null && !isNaN(parseFloat(novaTaxa))) {
+                taxaTele = parseFloat(novaTaxa);
+                if (db) db.ref('config/taxaTele').set(taxaTele);
+                alert("Taxa de tele atualizada!");
+            }
+        }
+
+        function gerenciarPrecosAdicionais() {
+            renderizarListaAdicionaisModal();
+            document.getElementById('modalAdicionais').style.display = 'flex';
+        }
+
+        function fecharModalAdicionais() {
+            document.getElementById('modalAdicionais').style.display = 'none';
+        }
+
+        function renderizarListaAdicionaisModal() {
+            let html = "";
+            for (let ing in precosAdicionais) {
+                html += `
+                    <div class="ingrediente-linha">
+                        <span class="ingrediente-nome">${ing}</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <input type="number" step="0.50" id="preco_adc_${ing}" value="${precosAdicionais[ing].toFixed(2)}" class="input-delivery" style="width: 80px; padding: 5px; text-align: center;">
+                            <button class="btn-totem" style="padding: 5px 10px; font-size: 0.75rem;" onclick="salvarPrecoAdicional('${ing}')">Salvar</button>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('listaAdicionaisAdmin').innerHTML = html;
+        }
+
+        function salvarPrecoAdicional(ingrediente) {
+            let input = document.getElementById('preco_adc_' + ingrediente);
+            let novoValor = parseFloat(input.value);
+            if (!isNaN(novoValor)) {
+                precosAdicionais[ingrediente] = novoValor;
+                if (db) db.ref('config/precosAdicionais').set(precosAdicionais);
+                alert(`Preço de "${ingrediente}" atualizado!`);
+            }
+        }
+
+        function cadastrarNovoAdicional() {
+            let nome = document.getElementById('novoAdcNome').value.trim();
+            let preco = parseFloat(document.getElementById('novoAdcPreco').value);
+
+            if (!nome || isNaN(preco)) {
+                alert("Preencha o nome e o preço!");
+                return;
+            }
+
+            precosAdicionais[nome] = preco;
+            if (db) db.ref('config/precosAdicionais').set(precosAdicionais);
+            document.getElementById('novoAdcNome').value = "";
+            document.getElementById('novoAdcPreco').value = "";
+            renderizarListaAdicionaisModal();
+            alert(`Adicional "${nome}" salvo!`);
+        }
+
+        function abrirModalNovoProduto() {
+            document.getElementById('modalNovoProduto').style.display = 'flex';
+        }
+
+        function fecharModalNovoProduto() {
+            document.getElementById('modalNovoProduto').style.display = 'none';
+        }
+
+        function abrirModalEditarProduto(idKey, categoria, nome, desc, precoG, precoM, img) {
+            document.getElementById('editProdIdKey').value = idKey;
+            document.getElementById('editProdCategoria').value = categoria;
+            document.getElementById('editProdNome').value = nome;
+            document.getElementById('editProdDesc').value = desc;
+            document.getElementById('editProdPrecoGrande').value = precoG;
+            document.getElementById('editProdPrecoMini').value = (precoM > 0) ? precoM : '';
+            document.getElementById('editProdImg').value = img;
+            
+            document.getElementById('modalEditarProduto').style.display = 'flex';
+        }
+
+        function fecharModalEditarProduto() {
+            document.getElementById('modalEditarProduto').style.display = 'none';
+        }
+
+        function salvarEdicaoProdutoBanco() {
+            let idKey = document.getElementById('editProdIdKey').value;
+            let categoria = document.getElementById('editProdCategoria').value.trim();
+            let nome = document.getElementById('editProdNome').value.trim();
+            let desc = document.getElementById('editProdDesc').value.trim();
+            let precoG = parseFloat(document.getElementById('editProdPrecoGrande').value);
+            let precoM = parseFloat(document.getElementById('editProdPrecoMini').value) || 0;
+            let img = document.getElementById('editProdImg').value.trim();
+
+            if (!idKey || !nome || isNaN(precoG)) {
+                alert("Preencha o Nome e o Preço Grande corretamente!");
+                return;
+            }
+
+            if (db) {
+                db.ref('produtos/' + idKey).update({
+                    categoria, nome, desc, precoG, precoM, img
+                }).then(() => {
+                    alert("Produto atualizado com sucesso na nuvem!");
+                    fecharModalEditarProduto();
+                }).catch((error) => {
+                    alert("Erro ao atualizar: " + error.message);
+                });
+            }
+        }
+
+        function verificarNovaCategoria(selectEl) {
+            if (selectEl.value === "NOVA_CATEGORIA") {
+                let novaCat = prompt("Digite o nome da Nova Categoria (Ex: Bebidas, Sobremesas):");
+                if (novaCat && novaCat.trim() !== "") {
+                    let opt = document.createElement('option');
+                    opt.value = novaCat.trim();
+                    opt.text = novaCat.trim();
+                    selectEl.insertBefore(opt, selectEl.lastElementChild);
+                    selectEl.value = novaCat.trim();
+                } else {
+                    selectEl.value = "Lanches & Xis";
+                }
+            }
+        }
+
+        function salvarNovoProdutoBanco() {
+            let categoria = document.getElementById('novoProdCategoria').value;
+            let nome = document.getElementById('novoProdNome').value.trim();
+            let desc = document.getElementById('novoProdDesc').value.trim();
+            let precoG = parseFloat(document.getElementById('novoProdPrecoGrande').value);
+            let precoM = parseFloat(document.getElementById('novoProdPrecoMini').value) || 0;
+            let img = document.getElementById('novoProdImg').value.trim() || "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80";
+
+            if(!nome || isNaN(precoG)) {
+                alert("Preencha pelo menos o Nome e o Preço Principal!");
+                return;
+            }
+
+            if (db) {
+                db.ref('produtos').push({
+                    categoria, nome, desc, precoG, precoM, img, pausado: false
+                });
+                alert("Produto cadastrado com sucesso!");
+                fecharModalNovoProduto();
+                document.getElementById('novoProdNome').value = "";
+                document.getElementById('novoProdDesc').value = "";
+                document.getElementById('novoProdPrecoGrande').value = "";
+                document.getElementById('novoProdPrecoMini').value = "";
+                document.getElementById('novoProdImg').value = "";
+            }
+        }
+    </script>
+</body>
+</html>
