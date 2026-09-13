@@ -319,7 +319,7 @@
         <div class="modal-box">
             <button class="btn-fechar-modal" onclick="fecharModalTotem()">✕ Fechar</button>
             <h2 id="modalTotemTitulo">Personalizar Lanche</h2>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Ajuste os ingredientes abaixo:</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Escolha os adicionais permitidos:</p>
             
             <div id="modalTotemIngredientes"></div>
 
@@ -355,15 +355,21 @@
                 <input type="text" id="novoProdNome" class="input-delivery" placeholder="Ex: Xis Especial">
             </div>
             <div class="form-group">
-                <label>Descrição / Ingredientes:</label>
+                <label>Descrição do Lanche (Ingredientes texto):</label>
                 <input type="text" id="novoProdDesc" class="input-delivery" placeholder="Ex: Pão, bife, queijo, alface...">
+            </div>
+            <div class="form-group">
+                <label>Selecione quais Adicionais este lanche terá:</label>
+                <div id="listaAdicionaisCheckboxesNovo" style="background: #0f0a08; border: 1px solid #3d2214; padding: 10px; border-radius: 6px; max-height: 140px; overflow-y: auto;">
+                    <!-- Preenchido via script -->
+                </div>
             </div>
             <div class="form-group">
                 <label>Preço Grande / Único (R$):</label>
                 <input type="number" step="0.50" id="novoProdPrecoGrande" class="input-delivery" placeholder="Ex: 30.00">
             </div>
             <div class="form-group">
-                <label>Preço Mini (Opcional - deixe vazio se não tiver):</label>
+                <label>Preço Mini (Opcional):</label>
                 <input type="number" step="0.50" id="novoProdPrecoMini" class="input-delivery" placeholder="Ex: 25.00">
             </div>
             <div class="form-group">
@@ -373,7 +379,7 @@
             <button class="btn-confirmar-lanche" onclick="salvarNovoProdutoBanco()">Salvar na Nuvem</button>
         </div>
     </div>
-    <!-- MODAL DE EDITAR PREÇOS E DADOS -->
+    <!-- MODAL DE EDITAR PRODUTO -->
     <div id="modalEditarProduto" class="modal-totem">
         <div class="modal-box">
             <button class="btn-fechar-modal" onclick="fecharModalEditarProduto()">✕ Fechar</button>
@@ -389,8 +395,14 @@
                 <input type="text" id="editProdNome" class="input-delivery">
             </div>
             <div class="form-group">
-                <label>Descrição / Ingredientes:</label>
+                <label>Descrição do Lanche:</label>
                 <input type="text" id="editProdDesc" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Selecione quais Adicionais este lanche terá:</label>
+                <div id="listaAdicionaisCheckboxesEdit" style="background: #0f0a08; border: 1px solid #3d2214; padding: 10px; border-radius: 6px; max-height: 140px; overflow-y: auto;">
+                    <!-- Preenchido via script -->
+                </div>
             </div>
             <div class="form-group">
                 <label>Preço Grande / Único (R$):</label>
@@ -413,12 +425,12 @@
         <div class="modal-box">
             <button class="btn-fechar-modal" onclick="fecharModalAdicionais()">✕ Fechar</button>
             <h2>⚙️ Gerenciar Adicionais</h2>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Altere os valores cobrados por cada ingrediente extra:</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Valores cobrados por cada ingrediente extra opcional:</p>
             
             <div id="listaAdicionaisAdmin" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;"></div>
 
             <div style="border-top: 1px solid #333; padding-top: 10px;">
-                <p style="font-size: 0.8rem; color: var(--accent-color); font-weight: bold; margin-bottom: 5px;">Adicionar Novo Ingrediente Extra:</p>
+                <p style="font-size: 0.8rem; color: var(--accent-color); font-weight: bold; margin-bottom: 5px;">Adicionar Novo Extra:</p>
                 <div style="display: flex; gap: 8px;">
                     <input type="text" id="novoAdcNome" class="input-delivery" placeholder="Nome (Ex: Cheddar)" style="flex: 2;">
                     <input type="number" step="0.50" id="novoAdcPreco" class="input-delivery" placeholder="Preço R$" style="flex: 1;">
@@ -540,9 +552,8 @@
         let lancheAtual = null;
 
         let precosAdicionais = {
-            "Bife": 6.00, "Ovo": 3.00, "Bacon": 5.00, "Presunto": 3.00, 
-            "Queijo": 4.00, "Milho": 2.00, "Ervilha": 2.00, "Tomate": 2.00, 
-            "Alface": 2.00, "Coração": 7.00, "Salsicha": 3.00
+            "Bacon": 5.00, "Ovo": 3.00, "Coração": 7.00, "Calabresa": 5.00, 
+            "Queijo": 4.00, "Cheddar": 5.00, "Catupiry": 5.00, "Milho": 2.00
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -560,7 +571,10 @@
             });
 
             db.ref('config/precosAdicionais').on('value', (snapshot) => {
-                if (snapshot.exists()) precosAdicionais = snapshot.val();
+                if (snapshot.exists()) {
+                    precosAdicionais = snapshot.val();
+                    atualizarCheckboxesAdicionaisModais();
+                }
             });
 
             db.ref('produtos').on('value', (snapshot) => {
@@ -593,19 +607,18 @@
                     
                     produtosPorCategoria[cat].forEach(p => {
                         let classePausado = (p.pausado === true || p.pausado === "true") ? ' indisponivel' : '';
-                        let ingredientesArray = p.desc ? p.desc.split(',').map(i => i.trim()) : ["Bife", "Queijo"];
-                        let ingredientesStr = JSON.stringify(ingredientesArray).replace(/"/g, '&quot;');
                         let precoMiniVal = p.precoM ? p.precoM : 0;
                         let imgSafe = p.img || '';
                         let descSafe = (p.desc || '').replace(/'/g, "&#39;");
                         let nomeSafe = (p.nome || '').replace(/'/g, "&#39;");
                         let catSafe = cat.replace(/'/g, "&#39;");
+                        let admsPermitidosStr = JSON.stringify(p.adicionaisPermitidos || []).replace(/"/g, '&quot;');
                         
-                        let botoesAcao = `<button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe}', ${p.precoG}, ${ingredientesStr}, '${imgSafe}')">🛠️ Pedir (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>`;
+                        let botoesAcao = `<button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe}', ${p.precoG}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Pedir (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>`;
                         if(p.precoM && p.precoM > 0) {
                             botoesAcao = `
-                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Grande)', ${p.precoG}, ${ingredientesStr}, '${imgSafe}')">🛠️ Grande (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>
-                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Mini)', ${p.precoM}, ${ingredientesStr}, '${imgSafe}')">🛠️ Mini (R$ ${Number(p.precoM).toFixed(2).replace('.', ',')})</button>
+                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Grande)', ${p.precoG}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Grande (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>
+                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Mini)', ${p.precoM}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Mini (R$ ${Number(p.precoM).toFixed(2).replace('.', ',')})</button>
                             `;
                         }
 
@@ -614,14 +627,14 @@
                         let styleAdmin = isLojistaAtivo ? "display:flex;" : "display:none;";
                         let controlesAdminHTML = `
                             <div class="admin-controls" style="${styleAdmin}" onclick="event.stopPropagation()">
-                                <button class="btn-admin" onclick="abrirModalEditarProduto('${p.idKey}', '${catSafe}', '${nomeSafe}', '${descSafe}', ${p.precoG}, ${precoMiniVal}, '${imgSafe}')">✏️ Editar / Preços</button>
+                                <button class="btn-admin" onclick="abrirModalEditarProduto('${p.idKey}', '${catSafe}', '${nomeSafe}', '${descSafe}', ${p.precoG}, ${precoMiniVal}, '${imgSafe}', ${admsPermitidosStr})">✏️ Editar / Preços</button>
                                 <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
                                 <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
                             </div>
                         `;
 
                         htmlCat += `
-                            <div class="totem-card${classePausado}" data-firebase-id="${p.idKey}" onclick="abrirModalVisualizar('${nomeSafe}', '${descSafe}', '${imgSafe}', ${p.precoG}, ${precoMiniVal}, ${ingredientesStr})">
+                            <div class="totem-card${classePausado}" data-firebase-id="${p.idKey}" onclick="abrirModalVisualizar('${nomeSafe}', '${descSafe}', '${imgSafe}', ${p.precoG}, ${precoMiniVal}, ${admsPermitidosStr})">
                                 <img src="${imgSafe}" class="totem-img" alt="${nomeSafe}">
                                 <div class="totem-content">
                                     <div class="totem-info">
@@ -644,6 +657,21 @@
             });
         });
 
+        function atualizarCheckboxesAdicionaisModais(selecionados = []) {
+            let html = "";
+            for (let adc in precosAdicionais) {
+                let marcado = selecionados.includes(adc) ? "checked" : "";
+                html += `
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-bottom: 6px; cursor: pointer; color: #fff;">
+                        <input type="checkbox" value="${adc}" class="chk-adc-novo" ${marcado} style="width: 16px; height: 16px; accent-color: var(--accent-color);">
+                        ${adc} (+R$ ${precosAdicionais[adc].toFixed(2)})
+                    </label>
+                `;
+            }
+            let elNovo = document.getElementById('listaAdicionaisCheckboxesNovo');
+            if(elNovo) elNovo.innerHTML = html;
+        }
+
         function ativarModoLojistaVisualmente() {
             document.body.classList.add('modo-lojista-ativo');
             let painel = document.getElementById('painelCriarProduto');
@@ -661,7 +689,7 @@
         }
     </script>
     <script>
-        function abrirModalVisualizar(nome, desc, img, precoG, precoM, ingredientesArray) {
+        function abrirModalVisualizar(nome, desc, img, precoG, precoM, adicionaisPermitidos) {
             document.getElementById('viewProdNome').innerText = nome;
             document.getElementById('viewProdImg').src = img;
             document.getElementById('viewProdDesc').innerText = desc ? "Ingredientes: " + desc : "Sem descrição detalhada.";
@@ -675,7 +703,7 @@
             let btnPedir = document.getElementById('viewProdBtnPedir');
             btnPedir.onclick = function() {
                 fecharModalVisualizar();
-                abrirTotemLanche(nome, precoG, ingredientesArray, img);
+                abrirTotemLanche(nome, precoG, adicionaisPermitidos, img);
             };
 
             document.getElementById('modalVisualizarProduto').style.display = 'flex';
@@ -685,14 +713,23 @@
             document.getElementById('modalVisualizarProduto').style.display = 'none';
         }
 
-        function abrirTotemLanche(nome, preco, ingredientes, img) {
+        function abrirTotemLanche(nome, preco, adicionaisPermitidos, img) {
+            let ingredientesLista = [];
+            if (adicionaisPermitidos && Array.isArray(adicionaisPermitidos)) {
+                adicionaisPermitidos.forEach(adc => {
+                    ingredientesLista.push({ nome: adc, qtd: 1 });
+                });
+            }
+
             lancheAtual = { 
                 nome, 
                 precoBase: preco, 
                 precoCalculado: preco, 
-                ingredientes: ingredientes.map(ing => ({ nome: ing, qtd: 1 })), 
-                img 
+                ingredientes: ingredientesLista, 
+                img,
+                adicionaisPermitidos
             };
+            
             document.getElementById('modalTotemTitulo').innerText = nome + " - R$ " + preco.toFixed(2).replace('.', ',');
             document.getElementById('modalObservacao').value = "";
             renderizarIngredientesModal();
@@ -703,21 +740,25 @@
             let html = "";
             let valorExtraTotal = 0;
 
-            lancheAtual.ingredientes.forEach((item, index) => {
-                let precoUnitario = precosAdicionais[item.nome] || 3.00;
-                if (item.qtd > 1) valorExtraTotal += (item.qtd - 1) * precoUnitario;
+            if (!lancheAtual.ingredientes || lancheAtual.ingredientes.length === 0) {
+                html = "<p style='color:var(--text-muted); font-size:0.85rem; text-align:center;'>Este produto não possui adicionais extras disponíveis.</p>";
+            } else {
+                lancheAtual.ingredientes.forEach((item, index) => {
+                    let precoUnitario = precosAdicionais[item.nome] || 3.00;
+                    if (item.qtd > 1) valorExtraTotal += (item.qtd - 1) * precoUnitario;
 
-                html += `
-                    <div class="ingrediente-linha">
-                        <span class="ingrediente-nome">${item.nome} <small style="color:var(--accent-color);">(+R$ ${precoUnitario.toFixed(2).replace('.', ',')})</small></span>
-                        <div class="ingrediente-controles">
-                            <button class="btn-qtd btn-menos" onclick="mudarQtdIngrediente(${index}, -1)">-</button>
-                            <span class="qtd-numero">${item.qtd}</span>
-                            <button class="btn-qtd btn-mais" onclick="mudarQtdIngrediente(${index}, +1)">+</button>
+                    html += `
+                        <div class="ingrediente-linha">
+                            <span class="ingrediente-nome">${item.nome} <small style="color:var(--accent-color);">(+R$ ${precoUnitario.toFixed(2).replace('.', ',')})</small></span>
+                            <div class="ingrediente-controles">
+                                <button class="btn-qtd btn-menos" onclick="mudarQtdIngrediente(${index}, -1)">-</button>
+                                <span class="qtd-numero">${item.qtd}</span>
+                                <button class="btn-qtd btn-mais" onclick="mudarQtdIngrediente(${index}, +1)">+</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
 
             lancheAtual.precoCalculado = lancheAtual.precoBase + valorExtraTotal;
             document.getElementById('modalTotemTitulo').innerText = lancheAtual.nome + " - R$ " + lancheAtual.precoCalculado.toFixed(2).replace('.', ',');
@@ -726,7 +767,7 @@
 
         function mudarQtdIngrediente(index, delta) {
             lancheAtual.ingredientes[index].qtd += delta;
-            if (lancheAtual.ingredientes[index].qtd < 0) lancheAtual.ingredientes[index].qtd = 0;
+            if (lancheAtual.ingredientes[index].qtd < 1) lancheAtual.ingredientes[index].qtd = 1;
             if (lancheAtual.ingredientes[index].qtd > 4) lancheAtual.ingredientes[index].qtd = 4;
             renderizarIngredientesModal();
         }
@@ -738,16 +779,15 @@
         function adicionarAoCarrinhoTotem() {
             if (!lancheAtual) return;
             let obs = document.getElementById('modalObservacao').value;
-            let retirados = [];
             let extras = [];
             
-            lancheAtual.ingredientes.forEach(item => {
-                if (item.qtd === 0) retirados.push("SEM " + item.nome.toUpperCase());
-                if (item.qtd > 1) extras.push(`EXTRA ${item.nome.toUpperCase()} (x${item.qtd - 1})`);
-            });
+            if (lancheAtual.ingredientes) {
+                lancheAtual.ingredientes.forEach(item => {
+                    if (item.qtd > 1) extras.push(`EXTRA ${item.nome.toUpperCase()} (x${item.qtd - 1})`);
+                });
+            }
 
-            let modificacoes = retirados.concat(extras);
-            let nomeFinal = lancheAtual.nome + (modificacoes.length > 0 ? " [" + modificacoes.join(", ") + "]" : "");
+            let nomeFinal = lancheAtual.nome + (extras.length > 0 ? " [" + extras.join(", ") + "]" : "");
 
             carrinho.push({ nome: nomeFinal, precoBase: lancheAtual.precoCalculado, observacao: obs });
             atualizarCarrinhoBarra();
@@ -888,7 +928,8 @@
                 alert("Senha incorreta!");
             }
         }
-
+    </script>
+    <script>
         function alternarPausaCard(btn) {
             let card = btn.closest('.totem-card');
             let idKey = card.getAttribute('data-firebase-id');
@@ -988,10 +1029,12 @@
             document.getElementById('novoAdcNome').value = "";
             document.getElementById('novoAdcPreco').value = "";
             renderizarListaAdicionaisModal();
+            atualizarCheckboxesAdicionaisModais();
             alert(`Adicional "${nome}" salvo!`);
         }
 
         function abrirModalNovoProduto() {
+            atualizarCheckboxesAdicionaisModais([]);
             document.getElementById('modalNovoProduto').style.display = 'flex';
         }
 
@@ -999,7 +1042,7 @@
             document.getElementById('modalNovoProduto').style.display = 'none';
         }
 
-        function abrirModalEditarProduto(idKey, categoria, nome, desc, precoG, precoM, img) {
+        function abrirModalEditarProduto(idKey, categoria, nome, desc, precoG, precoM, img, adicionaisPermitidos) {
             document.getElementById('editProdIdKey').value = idKey;
             document.getElementById('editProdCategoria').value = categoria;
             document.getElementById('editProdNome').value = nome;
@@ -1008,6 +1051,18 @@
             document.getElementById('editProdPrecoMini').value = (precoM > 0) ? precoM : '';
             document.getElementById('editProdImg').value = img;
             
+            let html = "";
+            for (let adc in precosAdicionais) {
+                let marcado = (adicionaisPermitidos && adicionaisPermitidos.includes(adc)) ? "checked" : "";
+                html += `
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; margin-bottom: 6px; cursor: pointer; color: #fff;">
+                        <input type="checkbox" value="${adc}" class="chk-adc-edit" ${marcado} style="width: 16px; height: 16px; accent-color: var(--accent-color);">
+                        ${adc} (+R$ ${precosAdicionais[adc].toFixed(2)})
+                    </label>
+                `;
+            }
+            document.getElementById('listaAdicionaisCheckboxesEdit').innerHTML = html;
+
             document.getElementById('modalEditarProduto').style.display = 'flex';
         }
 
@@ -1024,6 +1079,11 @@
             let precoM = parseFloat(document.getElementById('editProdPrecoMini').value) || 0;
             let img = document.getElementById('editProdImg').value.trim();
 
+            let adicionaisPermitidos = [];
+            document.querySelectorAll('.chk-adc-edit:checked').forEach(chk => {
+                adicionaisPermitidos.push(chk.value);
+            });
+
             if (!idKey || !nome || isNaN(precoG)) {
                 alert("Preencha o Nome e o Preço Grande corretamente!");
                 return;
@@ -1031,7 +1091,7 @@
 
             if (db) {
                 db.ref('produtos/' + idKey).update({
-                    categoria, nome, desc, precoG, precoM, img
+                    categoria, nome, desc, adicionaisPermitidos, precoG, precoM, img
                 }).then(() => {
                     alert("Produto atualizado com sucesso na nuvem!");
                     fecharModalEditarProduto();
@@ -1064,6 +1124,11 @@
             let precoM = parseFloat(document.getElementById('novoProdPrecoMini').value) || 0;
             let img = document.getElementById('novoProdImg').value.trim() || "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80";
 
+            let adicionaisPermitidos = [];
+            document.querySelectorAll('.chk-adc-novo:checked').forEach(chk => {
+                adicionaisPermitidos.push(chk.value);
+            });
+
             if(!nome || isNaN(precoG)) {
                 alert("Preencha pelo menos o Nome e o Preço Principal!");
                 return;
@@ -1071,7 +1136,7 @@
 
             if (db) {
                 db.ref('produtos').push({
-                    categoria, nome, desc, precoG, precoM, img, pausado: false
+                    categoria, nome, desc, adicionaisPermitidos, precoG, precoM, img, pausado: false
                 });
                 alert("Produto cadastrado com sucesso!");
                 fecharModalNovoProduto();
