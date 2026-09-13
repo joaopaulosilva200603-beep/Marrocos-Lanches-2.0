@@ -361,7 +361,6 @@
             <div class="form-group">
                 <label>Selecione quais Adicionais este lanche terá:</label>
                 <div id="listaAdicionaisCheckboxesNovo" style="background: #0f0a08; border: 1px solid #3d2214; padding: 10px; border-radius: 6px; max-height: 140px; overflow-y: auto;">
-                    <!-- Preenchido via script -->
                 </div>
             </div>
             <div class="form-group">
@@ -401,7 +400,6 @@
             <div class="form-group">
                 <label>Selecione quais Adicionais este lanche terá:</label>
                 <div id="listaAdicionaisCheckboxesEdit" style="background: #0f0a08; border: 1px solid #3d2214; padding: 10px; border-radius: 6px; max-height: 140px; overflow-y: auto;">
-                    <!-- Preenchido via script -->
                 </div>
             </div>
             <div class="form-group">
@@ -606,7 +604,8 @@
                     let htmlCat = `<div class="category-title" style="margin-top:25px;">${cat}</div>`;
                     
                     produtosPorCategoria[cat].forEach(p => {
-                        let classePausado = (p.pausado === true || p.pausado === "true") ? ' indisponivel' : '';
+                        let isPausado = (p.pausado === true || p.pausado === "true");
+                        let classePausado = isPausado ? ' indisponivel' : '';
                         let precoMiniVal = p.precoM ? p.precoM : 0;
                         let imgSafe = p.img || '';
                         let descSafe = (p.desc || '').replace(/'/g, "&#39;");
@@ -614,12 +613,17 @@
                         let catSafe = cat.replace(/'/g, "&#39;");
                         let admsPermitidosStr = JSON.stringify(p.adicionaisPermitidos || []).replace(/"/g, '&quot;');
                         
-                        let botoesAcao = `<button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe}', ${p.precoG}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Pedir (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>`;
-                        if(p.precoM && p.precoM > 0) {
-                            botoesAcao = `
-                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Grande)', ${p.precoG}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Grande (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>
-                                <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Mini)', ${p.precoM}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Mini (R$ ${Number(p.precoM).toFixed(2).replace('.', ',')})</button>
-                            `;
+                        let botoesAcao = "";
+                        if (isPausado && !isLojistaAtivo) {
+                            botoesAcao = `<button class="btn-totem" style="opacity:0.6; cursor:not-allowed;" onclick="event.stopPropagation(); alert('Produto esgotado no momento!');">Indisponível</button>`;
+                        } else {
+                            botoesAcao = `<button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe}', ${p.precoG}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Pedir (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>`;
+                            if(p.precoM && p.precoM > 0) {
+                                botoesAcao = `
+                                    <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Grande)', ${p.precoG}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Grande (R$ ${Number(p.precoG).toFixed(2).replace('.', ',')})</button>
+                                    <button class="btn-totem" onclick="event.stopPropagation(); abrirTotemLanche('${nomeSafe} (Mini)', ${p.precoM}, ${admsPermitidosStr}, '${imgSafe}')">🛠️ Mini (R$ ${Number(p.precoM).toFixed(2).replace('.', ',')})</button>
+                                `;
+                            }
                         }
 
                         let precoTexto = (p.precoM && p.precoM > 0) ? `Grande: R$ ${Number(p.precoG).toFixed(2)} | Mini: R$ ${Number(p.precoM).toFixed(2)}` : `Valor: R$ ${Number(p.precoG).toFixed(2)}`;
@@ -633,8 +637,15 @@
                             </div>
                         `;
 
+                        let acaoCliqueCard = "";
+                        if (isPausado && !isLojistaAtivo) {
+                            acaoCliqueCard = `onclick="alert('Este produto está esgotado no momento!');"`;
+                        } else {
+                            acaoCliqueCard = `onclick="abrirModalVisualizar('${nomeSafe}', '${descSafe}', '${imgSafe}', ${p.precoG}, ${precoMiniVal}, ${admsPermitidosStr})"`;
+                        }
+
                         htmlCat += `
-                            <div class="totem-card${classePausado}" data-firebase-id="${p.idKey}" onclick="abrirModalVisualizar('${nomeSafe}', '${descSafe}', '${imgSafe}', ${p.precoG}, ${precoMiniVal}, ${admsPermitidosStr})">
+                            <div class="totem-card${classePausado}" data-firebase-id="${p.idKey}" ${acaoCliqueCard}>
                                 <img src="${imgSafe}" class="totem-img" alt="${nomeSafe}">
                                 <div class="totem-content">
                                     <div class="totem-info">
