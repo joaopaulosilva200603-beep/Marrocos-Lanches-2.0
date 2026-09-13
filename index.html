@@ -83,7 +83,6 @@
             margin: 0 auto;
             padding: 15px;
         }
-
         .category-title {
             font-size: 1.15rem;
             color: var(--accent-color);
@@ -207,7 +206,6 @@
             box-sizing: border-box;
         }
         .modal-box h2 { margin: 0 0 6px; color: var(--accent-color); font-size: 1.25rem; }
-
         .ingrediente-linha {
             display: flex; justify-content: space-between; align-items: center;
             padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -275,7 +273,15 @@
         <p>Delivery & Retirada</p>
         <div class="header-address">📍 Rua Luiz Inácio Dutra, 457</div>
     </header>
-            <!-- PAINEL DE AÇÕES EXCLUSIVO DO LOJISTA -->
+
+    <div class="container" id="containerPrincipal">
+        
+        <div class="banner-tele">
+            <span>🛵 Taxa de Tele-entrega:</span>
+            <span id="txtTaxaTele" style="color: var(--accent-color);">R$ 5,00</span>
+        </div>
+
+        <!-- PAINEL DE AÇÕES EXCLUSIVO DO LOJISTA -->
         <div id="painelCriarProduto" style="display: none; margin-bottom: 20px; text-align: center;">
             <button class="btn-confirmar-lanche" onclick="abrirModalNovoProduto()" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); margin-top: 0; padding: 10px;">
                 ➕ Cadastrar Novo Produto
@@ -288,801 +294,9 @@
             </button>
         </div>
 
-        <!-- Xis da Casa -->
-        <div class="totem-card" data-id="lanche_xis_da_casa">
-            <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis da Casa">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis da Casa</h3>
-                    <p>Pão, Bife, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 27,00 | Mini: R$ 22,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis da Casa (Grande)', 27.00, ['Bife', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 27,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis da Casa (Mini)', 22.00, ['Bife', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 22,00)</button>
-                </div>
-            </div>
-        </div>
+    </div>
 
-        <!-- Xis da Casa C/ Dog -->
-        <div class="totem-card" data-id="lanche_xis_casa_dog">
-            <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis da Casa C/ Dog">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis da Casa C/ Dog</h3>
-                    <p>Pão, Bife, Salsicha, Ovo, Presunto, Queijo, Batata Palha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 30,00 | Mini: R$ 26,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis da Casa C/ Dog (Grande)', 30.00, ['Bife', 'Salsicha', 'Ovo', 'Presunto', 'Queijo', 'Batata Palha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 30,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis da Casa C/ Dog (Mini)', 26.00, ['Bife', 'Salsicha', 'Ovo', 'Presunto', 'Queijo', 'Batata Palha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 26,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Bacon -->
-        <div class="totem-card" data-id="lanche_xis_bacon">
-            <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Bacon">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Bacon</h3>
-                    <p>Pão, Bife, Bacon, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 33,00 | Mini: R$ 27,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Bacon (Grande)', 33.00, ['Bife', 'Bacon', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 33,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Bacon (Mini)', 27.00, ['Bife', 'Bacon', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 27,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Calabresa -->
-        <div class="totem-card" data-id="lanche_xis_calabresa">
-            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Calabresa">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Calabresa</h3>
-                    <p>Pão, Bife, Calabresa, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 33,00 | Mini: R$ 27,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Calabresa (Grande)', 33.00, ['Bife', 'Calabresa', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 33,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Calabresa (Mini)', 27.00, ['Bife', 'Calabresa', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 27,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Galinha -->
-        <div class="totem-card" data-id="lanche_xis_galinha">
-            <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Galinha">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Galinha</h3>
-                    <p>Pão, Bife, Peito de Frango Grelhado, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 33,00 | Mini: R$ 27,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Galinha (Grande)', 33.00, ['Bife', 'Peito de Frango Grelhado', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 33,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Galinha (Mini)', 27.00, ['Bife', 'Peito de Frango Grelhado', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 27,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Frango C/ Catupiry -->
-        <div class="totem-card" data-id="lanche_xis_frango_catupiry">
-            <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Frango C/ Catupiry">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Frango C/ Catupiry</h3>
-                    <p>Pão, Bife, Peito de Frango Desfiado, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 34,00 | Mini: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Frango C/ Catupiry (Grande)', 34.00, ['Bife', 'Peito de Frango Desfiado', 'Catupiry', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 34,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Frango C/ Catupiry (Mini)', 28.00, ['Bife', 'Peito de Frango Desfiado', 'Catupiry', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Frango Crisby -->
-        <div class="totem-card" data-id="lanche_xis_frango_crisby">
-            <img src="https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Frango Crisby">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Frango Crisby</h3>
-                    <p>Pão, Bife, Peito de Frango Empanado, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 34,00 | Mini: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Frango Crisby (Grande)', 34.00, ['Bife', 'Peito de Frango Empanado', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 34,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Frango Crisby (Mini)', 28.00, ['Bife', 'Peito de Frango Empanado', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Coração -->
-        <div class="totem-card" data-id="lanche_xis_coracao">
-            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Coração">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Coração</h3>
-                    <p>Pão, Bife, Coração, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 34,00 | Mini: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Coração (Grande)', 34.00, ['Bife', 'Coração', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 34,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Coração (Mini)', 28.00, ['Bife', 'Coração', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Picanha -->
-        <div class="totem-card" data-id="lanche_xis_picanha">
-            <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Picanha">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Picanha</h3>
-                    <p>Pão, Picanha em Cubos, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 37,00 | Mini: R$ 29,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Picanha (Grande)', 37.00, ['Picanha em Cubos', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 37,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Picanha (Mini)', 29.00, ['Picanha em Cubos', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 29,00)</button>
-                </div>
-            </div>
-        </div>
-        <!-- Xis Picanha Acebolado -->
-        <div class="totem-card" data-id="lanche_xis_picanha_acebolado">
-            <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Picanha Acebolado">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Picanha Acebolado</h3>
-                    <p>Pão, Picanha em Cubos C/ Cebola, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 38,00 | Mini: R$ 30,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Picanha Acebolado (Grande)', 38.00, ['Picanha C/ Cebola', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 38,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Picanha Acebolado (Mini)', 30.00, ['Picanha C/ Cebola', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 30,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Filé -->
-        <div class="totem-card" data-id="lanche_xis_file">
-            <img src="https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Filé">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Filé</h3>
-                    <p>Pão, Filé Mignon, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 37,00 | Mini: R$ 29,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé (Grande)', 37.00, ['Filé Mignon', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 37,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé (Mini)', 29.00, ['Filé Mignon', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 29,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Filé Acebolado -->
-        <div class="totem-card" data-id="lanche_xis_file_acebolado">
-            <img src="https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Filé Acebolado">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Filé Acebolado</h3>
-                    <p>Pão, Filé Mignon em Cubos C/ Cebola, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 38,00 | Mini: R$ 30,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé Acebolado (Grande)', 38.00, ['Filé C/ Cebola', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 38,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé Acebolado (Mini)', 30.00, ['Filé C/ Cebola', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 30,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Filé C/ 4 Queijos -->
-        <div class="totem-card" data-id="lanche_xis_file_4queijos">
-            <img src="https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Filé C/ 4 Queijos">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Filé C/ 4 Queijos</h3>
-                    <p>Pão, Filé Mignon em Cubos, Ovo, Presunto, Provolone, Cheddar, Parmesão, Mussarela, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 38,00 | Mini: R$ 30,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé 4 Queijos (Grande)', 38.00, ['Filé Mignon', 'Ovo', 'Presunto', 'Provolone', 'Cheddar', 'Parmesão', 'Mussarela', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 38,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé 4 Queijos (Mini)', 30.00, ['Filé Mignon', 'Ovo', 'Presunto', 'Provolone', 'Cheddar', 'Parmesão', 'Mussarela', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 30,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Filé À Parmegiana -->
-        <div class="totem-card" data-id="lanche_xis_file_parmegiana">
-            <img src="https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Filé À Parmegiana">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Filé À Parmegiana</h3>
-                    <p>Pão, Filé Mignon Empanado C/ Molho Vermelho, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 38,00 | Mini: R$ 30,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé À Parmegiana (Grande)', 38.00, ['Filé Empanado C/ Molho Vermelho', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 38,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Filé À Parmegiana (Mini)', 30.00, ['Filé Empanado C/ Molho Vermelho', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 30,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Strogonoff -->
-        <div class="totem-card" data-id="lanche_xis_strogonoff">
-            <img src="https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Strogonoff">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Strogonoff</h3>
-                    <p>Pão, Filé Mignon em Cubos C/ Molho Vermelho, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 38,00 | Mini: R$ 30,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Strogonoff (Grande)', 38.00, ['Filé Mignon C/ Molho Strogonoff', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 38,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Strogonoff (Mini)', 30.00, ['Filé Mignon C/ Molho Strogonoff', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1549611016-3a70d82b5040?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 30,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Colonial -->
-        <div class="totem-card" data-id="lanche_xis_colonial">
-            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Colonial">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Colonial</h3>
-                    <p>Pão, Bife, Omelete de Salame, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 34,00 | Mini: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Colonial (Grande)', 34.00, ['Bife', 'Omelete de Salame', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 34,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Colonial (Mini)', 28.00, ['Bife', 'Omelete de Salame', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Especial -->
-        <div class="totem-card" data-id="lanche_xis_especial">
-            <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Especial">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Especial</h3>
-                    <p>Pão, Bife, Bacon, Coração, Calabresa, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 36,00 | Mini: R$ 29,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Especial (Grande)', 36.00, ['Bife', 'Bacon', 'Coração', 'Calabresa', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 36,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Especial (Mini)', 29.00, ['Bife', 'Bacon', 'Coração', 'Calabresa', 'Ovo', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 29,00)</button>
-                </div>
-            </div>
-        </div>
-         <!-- Xis 4x4 -->
-        <div class="totem-card" data-id="lanche_xis_4x4">
-            <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis 4x4">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis 4x4</h3>
-                    <p>Pão, Bife, Coração, Frango, Filé, Ovo, Presunto, Provolone, Cheddar, Parmesão, Mussarela, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Grande: R$ 40,00 | Mini: R$ 32,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis 4x4 (Grande)', 40.00, ['Bife', 'Coração', 'Frango', 'Filé', 'Ovo', 'Presunto', 'Provolone', 'Cheddar', 'Parmesão', 'Mussarela', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 40,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis 4x4 (Mini)', 32.00, ['Bife', 'Coração', 'Frango', 'Filé', 'Ovo', 'Presunto', 'Provolone', 'Cheddar', 'Parmesão', 'Mussarela', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 32,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Xis Light -->
-        <div class="totem-card" data-id="lanche_xis_light">
-            <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Xis Light">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Xis Light</h3>
-                    <p>Pão de Centeio, Peito de Frango Grelhado, Presunto, Queijo, Milho, Ervilha, Tomate e Alface.</p>
-                    <div class="totem-preco">Valor: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Xis Light', 28.00, ['Peito de Frango Grelhado', 'Presunto', 'Queijo', 'Milho', 'Ervilha', 'Tomate', 'Alface'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Personalizar (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-                <!-- CATEGORIA 2: MINI XIS DOCES -->
-        <div class="category-title">🍫 Mini Xis Doces</div>
-
-        <!-- Mini Xis Prestígio -->
-        <div class="totem-card" data-id="lanche_mini_prestigio">
-            <img src="https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Mini Xis Prestígio">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Mini Xis Prestígio</h3>
-                    <p>Pão, Leite Condensado, Queijo, Chocolate Preto e Coco.</p>
-                    <div class="totem-preco">Valor: R$ 25,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Mini Xis Prestígio', 25.00, ['Leite Condensado', 'Queijo', 'Chocolate Preto', 'Coco'], 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 25,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mini Xis Chocolate Branco -->
-        <div class="totem-card" data-id="lanche_mini_choc_branco">
-            <img src="https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Mini Xis Chocolate Branco">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Mini Xis Chocolate Branco</h3>
-                    <p>Pão, Leite Condensado, Queijo e Chocolate Branco.</p>
-                    <div class="totem-preco">Valor: R$ 25,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Mini Xis Chocolate Branco', 25.00, ['Leite Condensado', 'Queijo', 'Chocolate Branco'], 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 25,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mini Xis Morango Moreno -->
-        <div class="totem-card" data-id="lanche_mini_morango_moreno">
-            <img src="https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Mini Xis Morango Moreno">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Mini Xis Morango Moreno</h3>
-                    <p>Pão, Leite Condensado, Queijo, Chocolate Preto e Morango.</p>
-                    <div class="totem-preco">Valor: R$ 25,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Mini Xis Morango Moreno', 25.00, ['Leite Condensado', 'Queijo', 'Chocolate Preto', 'Morango'], 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 25,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- CATEGORIA 3: CACHORRO-QUENTE, TORRADAS & ADICIONAIS -->
-        <div class="category-title">🥪 Cachorro-Quente, Torradas & Adicionais</div>
-
-        <!-- Cachorro-Quente Prensado -->
-        <div class="totem-card" data-id="lanche_dog_prensado">
-            <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Cachorro-Quente Prensado">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Cachorro-Quente Prensado</h3>
-                    <p>Salsicha, Presunto e Queijo.</p>
-                    <div class="totem-preco">Valor: R$ 22,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Cachorro-Quente Prensado', 22.00, ['Salsicha', 'Presunto', 'Queijo'], 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 22,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Torrada Simples -->
-        <div class="totem-card" data-id="torrada_simples">
-            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Torrada Simples">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Torrada Simples</h3>
-                    <p>Pão de Forma, Presunto e Queijo.</p>
-                    <div class="totem-preco">Valor: R$ 10,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Torrada Simples', 10.00, ['Presunto', 'Queijo'], 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 10,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Torrada Americana -->
-        <div class="totem-card" data-id="torrada_americana">
-            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Torrada Americana">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Torrada Americana</h3>
-                    <p>Pão, Bife ou Ovo, Presunto e Queijo.</p>
-                    <div class="totem-preco">Valor: R$ 20,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Torrada Americana', 20.00, ['Bife', 'Ovo', 'Presunto', 'Queijo'], 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 20,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Torrada Completa -->
-        <div class="totem-card" data-id="torrada_completa">
-            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Torrada Completa">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Torrada Completa</h3>
-                    <p>Pão, Bife, Ovo, Presunto e Queijo.</p>
-                    <div class="totem-preco">Valor: R$ 22,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Torrada Completa', 22.00, ['Bife', 'Ovo', 'Presunto', 'Queijo'], 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 22,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Adicional de Fritas -->
-        <div class="totem-card" data-id="adc_fritas">
-            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Adicional de Fritas">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Adicional de Fritas</h3>
-                    <p>Porção extra de batatas fritas crocantes.</p>
-                    <div class="totem-preco">Grande: R$ 8,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Adicional de Fritas', 8.00, ['Batata Frita'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 8,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Adicional de Queijo Frito -->
-        <div class="totem-card" data-id="adc_queijo_frito">
-            <img src="https://images.unsplash.com/photo-1531749668029-2db88e4276c7?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Adicional de Queijo Frito">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Adicional de Queijo Frito</h3>
-                    <p>Queijo crocante frito na chapa.</p>
-                    <div class="totem-preco">Grande: R$ 10,00 | Mini: R$ 2,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Adicional de Queijo Frito (Grande)', 10.00, ['Queijo Frito'], 'https://images.unsplash.com/photo-1531749668029-2db88e4276c7?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 10,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Adicional de Queijo Frito (Mini)', 2.00, ['Queijo Frito'], 'https://images.unsplash.com/photo-1531749668029-2db88e4276c7?auto=format&fit=crop&w=400&q=80')">🛠️ Mini (R$ 2,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- CATEGORIA 4: PORÇÕES CAPRICHADAS -->
-        <div class="category-title">🍟 Porções Caprichadas</div>
-
-        <!-- Tábua de Aperitivos -->
-        <div class="totem-card" data-id="porcao_tabua_aperitivos">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Tábua de Aperitivos">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Tábua de Aperitivos</h3>
-                    <p>Filé Mignon, Coração, Frango à Passarinha, Frango Empanado, Polenta Frita, Batata Frita, Pepino e Azeitona.</p>
-                    <div class="totem-preco">Grande: R$ 90,00 | Média: R$ 70,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Tábua de Aperitivos (Grande)', 90.00, ['Filé Mignon', 'Coração', 'Frango Passarinha', 'Polenta', 'Batata Frita', 'Pepino', 'Azeitona'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 90,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Tábua de Aperitivos (Média)', 70.00, ['Filé Mignon', 'Coração', 'Frango Passarinha', 'Polenta', 'Batata Frita', 'Pepino', 'Azeitona'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 70,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Iscas de Tilápia -->
-        <div class="totem-card" data-id="porcao_iscas_tilapia">
-            <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Iscas de Tilápia">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Iscas de Tilápia</h3>
-                    <p>Iscas de peixe tilápia empanadas e crocantes, acompanhadas de limão.</p>
-                    <div class="totem-preco">Grande: R$ 85,00 | Média: R$ 55,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Iscas de Tilápia (Grande)', 85.00, ['Iscas de Tilápia', 'Limão'], 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 85,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Iscas de Tilápia (Média)', 55.00, ['Iscas de Tilápia', 'Limão'], 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 55,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Camarão à Milanesa -->
-        <div class="totem-card" data-id="porcao_camarao_milanesa">
-            <img src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Camarão à Milanesa">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Camarão à Milanesa</h3>
-                    <p>Camarões selecionados empanados à milanesa.</p>
-                    <div class="totem-preco">Grande: R$ 120,00 | Média: R$ 70,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Camarão à Milanesa (Grande)', 120.00, ['Camarão à Milanesa'], 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 120,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Camarão à Milanesa (Média)', 70.00, ['Camarão à Milanesa'], 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 70,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Queijo Frito -->
-        <div class="totem-card" data-id="porcao_queijo_frito">
-            <img src="https://images.unsplash.com/photo-1531749668029-2db88e4276c7?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Porção Queijo Frito">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Porção de Queijo Frito</h3>
-                    <p>Cubos de queijo empanados e dourados.</p>
-                    <div class="totem-preco">Grande: R$ 65,00 | Média: R$ 50,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Porção Queijo Frito (Grande)', 65.00, ['Queijo Frito'], 'https://images.unsplash.com/photo-1531749668029-2db88e4276c7?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 65,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Porção Queijo Frito (Média)', 50.00, ['Queijo Frito'], 'https://images.unsplash.com/photo-1531749668029-2db88e4276c7?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 50,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Frango a Passarinho -->
-        <div class="totem-card" data-id="porcao_frango_passarinho">
-            <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Frango a Passarinho">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Frango a Passarinho</h3>
-                    <p>Pedaços crocantes de frango frito temperado.</p>
-                    <div class="totem-preco">Grande: R$ 55,00 | Média: R$ 45,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Frango a Passarinho (Grande)', 55.00, ['Frango a Passarinho'], 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 55,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Frango a Passarinho (Média)', 45.00, ['Frango a Passarinho'], 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 45,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Batata Frita Simples -->
-        <div class="totem-card" data-id="porcao_fritas_simples">
-            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Batata Frita Simples">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Batata Frita Simples</h3>
-                    <p>Porção tradicional de batatas fritas bem sequinhas.</p>
-                    <div class="totem-preco">Grande: R$ 35,00 | Média: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Batata Frita (Grande)', 35.00, ['Batata Frita'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 35,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Batata Frita (Média)', 28.00, ['Batata Frita'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fritas C/ Picanha e Bacon -->
-        <div class="totem-card" data-id="porcao_fritas_picanha_bacon">
-            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Fritas C/ Picanha e Bacon">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Fritas C/ Picanha e Bacon</h3>
-                    <p>Batatas fritas cobertas com tiras de picanha e bacon crocante.</p>
-                    <div class="totem-preco">Grande: R$ 60,00 | Média: R$ 50,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Fritas C/ Picanha e Bacon (Grande)', 60.00, ['Batata Frita', 'Picanha', 'Bacon'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 60,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Fritas C/ Picanha e Bacon (Média)', 50.00, ['Batata Frita', 'Picanha', 'Bacon'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 50,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Fritas C/ Picanha -->
-        <div class="totem-card" data-id="porcao_fritas_picanha">
-            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Fritas C/ Picanha">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Fritas C/ Picanha</h3>
-                    <p>Batatas fritas com saborosas tiras de picanha acebolada.</p>
-                    <div class="totem-preco">Grande: R$ 60,00 | Média: R$ 50,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Fritas C/ Picanha (Grande)', 60.00, ['Batata Frita', 'Picanha'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 60,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Fritas C/ Picanha (Média)', 50.00, ['Batata Frita', 'Picanha'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 50,00)</button>
-                </div>
-            </div>
-        </div>
-
-<!-- Fritas C/ Bacon -->
-        <div class="totem-card" data-id="porcao_fritas_bacon">
-            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Fritas C/ Bacon">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Fritas C/ Bacon</h3>
-                    <p>Batatas fritas cobertas com muito bacon em cubos.</p>
-                    <div class="totem-preco">Grande: R$ 55,00 | Média: R$ 45,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Fritas C/ Bacon (Grande)', 55.00, ['Batata Frita', 'Bacon'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 55,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Fritas C/ Bacon (Média)', 45.00, ['Batata Frita', 'Bacon'], 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 45,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Polenta Frita -->
-        <div class="totem-card" data-id="porcao_polenta">
-            <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Polenta Frita">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Polenta Frita</h3>
-                    <p>Polenta frita em palitos bem crocantes por fora e macios por dentro.</p>
-                    <div class="totem-preco">Grande: R$ 35,00 | Média: R$ 28,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Polenta Frita (Grande)', 35.00, ['Polenta Frita'], 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=400&q=80')">🛠️ Grande (R$ 35,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Polenta Frita (Média)', 28.00, ['Polenta Frita'], 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=400&q=80')">🛠️ Média (R$ 28,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Torre Strogonoff de Filé Mignon -->
-        <div class="totem-card" data-id="porcao_torre_strogonoff_file">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Torre Strogonoff Filé">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Torre Strogonoff de Filé Mignon</h3>
-                    <p>Torre de batatas com abundante molho strogonoff de filé mignon.</p>
-                    <div class="totem-preco">Valor: R$ 80,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Torre Strogonoff de Filé Mignon', 80.00, ['Batata Frita', 'Strogonoff Filé Mignon'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 80,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Torre Strogonoff de Peito de Frango -->
-        <div class="totem-card" data-id="porcao_torre_strogonoff_frango">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Torre Strogonoff Frango">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Torre Strogonoff de Peito de Frango</h3>
-                    <p>Torre de batatas com molho cremoso de strogonoff de frango.</p>
-                    <div class="totem-preco">Valor: R$ 70,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Torre Strogonoff de Peito de Frango', 70.00, ['Batata Frita', 'Strogonoff Frango'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 70,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Torre Mista -->
-        <div class="totem-card" data-id="porcao_torre_mista">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Torre Mista">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Torre Mista</h3>
-                    <p>Torre mista de batatas com variadas carnes e molho especial.</p>
-                    <div class="totem-preco">Valor: R$ 70,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Torre Mista', 70.00, ['Batata Frita', 'Carnes Mistas'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 70,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Picadinho -->
-        <div class="totem-card" data-id="porcao_picadinho">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Picadinho">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Picadinho</h3>
-                    <p>Salame, Queijo, Pepino e Azeitona.</p>
-                    <div class="totem-preco">Valor: R$ 40,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Picadinho', 40.00, ['Salame', 'Queijo', 'Pepino', 'Azeitona'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Adicionar (R$ 40,00)</button>
-                </div>
-            </div>
-        </div>
-     <!-- CATEGORIA 5: PRATOS À LA CARTE -->
-        <div class="category-title">🍽️ Pratos À La Carte</div>
-
-        <!-- À La Minuta Filé Mignon -->
-        <div class="totem-card" data-id="alacarte_alaminuta_file">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="À La Minuta Filé Mignon">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>À La Minuta Filé Mignon</h3>
-                    <p>Grelhado ou à Milanesa, Arroz, Batata Frita, Ovo e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro (2 Pessoas): R$ 90,00 | Meio (1 Pessoa): R$ 55,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('À La Minuta Filé Mignon (Inteiro)', 90.00, ['Filé Mignon', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro 2P (R$ 90,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('À La Minuta Filé Mignon (Meio)', 55.00, ['Filé Mignon', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Meio 1P (R$ 55,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- À La Minuta Picanha -->
-        <div class="totem-card" data-id="alacarte_alaminuta_picanha">
-            <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="À La Minuta Picanha">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>À La Minuta Picanha</h3>
-                    <p>Grelhado ou à Milanesa, Arroz, Batata Frita, Ovo e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro (2 Pessoas): R$ 90,00 | Meio (1 Pessoa): R$ 55,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('À La Minuta Picanha (Inteiro)', 90.00, ['Picanha', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro 2P (R$ 90,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('À La Minuta Picanha (Meio)', 55.00, ['Picanha', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80')">🛠️ Meio 1P (R$ 55,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- À La Minuta Peito de Frango -->
-        <div class="totem-card" data-id="alacarte_alaminuta_frango">
-            <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="À La Minuta Peito de Frango">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>À La Minuta Peito de Frango</h3>
-                    <p>Grelhado ou à Milanesa, Arroz, Batata Frita, Ovo e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro (2 Pessoas): R$ 70,00 | Meio (1 Pessoa): R$ 45,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('À La Minuta Peito de Frango (Inteiro)', 70.00, ['Peito de Frango', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro 2P (R$ 70,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('À La Minuta Peito de Frango (Meio)', 45.00, ['Peito de Frango', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Meio 1P (R$ 45,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filé Mignon Recheado C/ 4 Queijos -->
-        <div class="totem-card" data-id="alacarte_file_4queijos">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Filé Mignon Recheado C/ 4 Queijos">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Filé Mignon Recheado C/ 4 Queijos</h3>
-                    <p>(Provolone, Cheddar, Parmesão, Mussarela e Presunto) Arroz, Batata Frita, Ovo e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro: R$ 100,00 | Meio: R$ 60,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Filé Mignon Recheado 4 Queijos (Inteiro)', 100.00, ['Filé Recheado 4 Queijos', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro (R$ 100,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Filé Mignon Recheado 4 Queijos (Meio)', 60.00, ['Filé Recheado 4 Queijos', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Meio (R$ 60,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Peito de Frango Recheado C/ 4 Queijos -->
-        <div class="totem-card" data-id="alacarte_frango_4queijos">
-            <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Peito de Frango Recheado C/ 4 Queijos">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Peito de Frango Recheado C/ 4 Queijos</h3>
-                    <p>(Provolone, Cheddar, Parmesão, Mussarela e Presunto) Arroz, Batata Frita, Ovo e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro: R$ 80,00 | Meio: R$ 50,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Peito Frango Recheado 4 Queijos (Inteiro)', 80.00, ['Frango Recheado 4 Queijos', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro (R$ 80,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Peito Frango Recheado 4 Queijos (Meio)', 50.00, ['Frango Recheado 4 Queijos', 'Arroz', 'Batata Frita', 'Ovo', 'Salada Mista'], 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=400&q=80')">🛠️ Meio (R$ 50,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filé à Parmegiana -->
-        <div class="totem-card" data-id="alacarte_file_parmegiana">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Filé à Parmegiana">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Filé à Parmegiana</h3>
-                    <p>Filé Mignon à Milanesa c/ Presunto, Queijo e Molho Vermelho, Arroz, Batata Frita e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro: R$ 100,00 | Meio: R$ 60,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Filé à Parmegiana (Inteiro)', 100.00, ['Filé à Parmegiana', 'Arroz', 'Batata Frita', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro (R$ 100,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Filé à Parmegiana (Meio)', 60.00, ['Filé à Parmegiana', 'Arroz', 'Batata Frita', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Meio (R$ 60,00)</button>
-                </div>
-            </div>
-        </div>
-        <!-- Bauru ao Prato -->
-        <div class="totem-card" data-id="alacarte_bauru_prato">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Bauru ao Prato">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Bauru ao Prato</h3>
-                    <p>Filé Mignon Grelhado c/ Presunto, Queijo e Molho Vermelho, Arroz, Batata Frita e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro: R$ 100,00 | Meio: R$ 60,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Bauru ao Prato (Inteiro)', 100.00, ['Filé Bauru', 'Arroz', 'Batata Frita', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro (R$ 100,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Bauru ao Prato (Meio)', 60.00, ['Filé Bauru', 'Arroz', 'Batata Frita', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Meio (R$ 60,00)</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Colonial Prato -->
-        <div class="totem-card" data-id="alacarte_colonial">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" class="totem-img" alt="Prato Colonial">
-            <div class="totem-content">
-                <div class="totem-info">
-                    <h3>Prato Colonial</h3>
-                    <p>Filé Mignon, Picanha, Peito de Frango, Coração, Arroz, Polenta Frita, Omelete c/ Salame, Alface e Salada Mista.</p>
-                    <div class="totem-preco">Inteiro: R$ 120,00 | Meio: R$ 70,00</div>
-                </div>
-                <div class="totem-actions">
-                    <button class="btn-totem" onclick="abrirTotemLanche('Prato Colonial (Inteiro)', 120.00, ['Carnes Mistas Colonial', 'Arroz', 'Polenta Frita', 'Omelete Salame', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Inteiro (R$ 120,00)</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('Prato Colonial (Meio)', 70.00, ['Carnes Mistas Colonial', 'Arroz', 'Polenta Frita', 'Omelete Salame', 'Salada Mista'], 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80')">🛠️ Meio (R$ 70,00)</button>
-                </div>
-            </div>
-        </div>
-    </div> <!-- Fechamento da div .container -->
-        <!-- MODAL DE CUSTOMIZAÇÃO DO LANCHE -->
+    <!-- MODAL DE CUSTOMIZAÇÃO DO LANCHE -->
     <div id="modalTotem" class="modal-totem">
         <div class="modal-box">
             <button class="btn-fechar-modal" onclick="fecharModalTotem()">✕ Fechar</button>
@@ -1100,47 +314,81 @@
         </div>
     </div>
 
-<!-- MODAL CADASTRAR NOVO PRODUTO -->
-<div id="modalNovoProduto" class="modal-totem">
-    <div class="modal-box">
-        <button class="btn-fechar-modal" onclick="fecharModalNovoProduto()">X Fechar</button>
-        <h2>Cadastrar Novo Produto</h2>
-        
-        <div class="form-group" style="margin-top: 15px;">
-            <label>Categoria:</label>
-            <select id="novoProdCategoria" class="input-delivery" onchange="verificarNovaCategoria(this)">
-                <option value="Lanches & Xis">🍔 Lanches & Xis</option>
-                <option value="Mini Xis Doces">🍫 Mini Xis Doces</option>
-                <option value="Cachorro-Quente & Torradas">🌭 Cachorro-Quente & Torradas</option>
-                <option value="Porções Caprichadas">🍟 Porções Caprichadas</option>
-                <option value="Pratos à La Carte">🍽️ Pratos à La Carte</option>
-                <option value="NOVA_CATEGORIA">➕ Criar Nova Categoria...</option>
-            </select>
-        </div>
+    <!-- MODAL CADASTRAR NOVO PRODUTO -->
+    <div id="modalNovoProduto" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalNovoProduto()">✕ Fechar</button>
+            <h2>Cadastrar Novo Produto</h2>
+            
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Categoria:</label>
+                <select id="novoProdCategoria" class="input-delivery" onchange="verificarNovaCategoria(this)">
+                    <option value="Lanches & Xis">🍔 Lanches & Xis</option>
+                    <option value="Mini Xis Doces">🍫 Mini Xis Doces</option>
+                    <option value="Cachorro-Quente & Torradas">🌭 Cachorro-Quente & Torradas</option>
+                    <option value="Porções Caprichadas">🍟 Porções Caprichadas</option>
+                    <option value="Pratos à La Carte">🍽️ Pratos à La Carte</option>
+                    <option value="NOVA_CATEGORIA">➕ Criar Nova Categoria...</option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label>Nome do Produto:</label>
-            <input type="text" id="novoProdNome" class="input-delivery" placeholder="Ex: Xis Especial">
+            <div class="form-group">
+                <label>Nome do Produto:</label>
+                <input type="text" id="novoProdNome" class="input-delivery" placeholder="Ex: Xis Especial">
+            </div>
+            <div class="form-group">
+                <label>Descrição / Ingredientes:</label>
+                <input type="text" id="novoProdDesc" class="input-delivery" placeholder="Ex: Pão, bife, queijo, alface...">
+            </div>
+            <div class="form-group">
+                <label>Preço Grande / Único (R$):</label>
+                <input type="number" step="0.50" id="novoProdPrecoGrande" class="input-delivery" placeholder="Ex: 30.00">
+            </div>
+            <div class="form-group">
+                <label>Preço Mini (Opcional - deixe vazio se não tiver):</label>
+                <input type="number" step="0.50" id="novoProdPrecoMini" class="input-delivery" placeholder="Ex: 25.00">
+            </div>
+            <div class="form-group">
+                <label>Link da Foto (URL):</label>
+                <input type="text" id="novoProdImg" class="input-delivery" placeholder="Cole o link da imagem aqui">
+            </div>
+            <button class="btn-confirmar-lanche" onclick="salvarNovoProdutoBanco()">Salvar na Nuvem</button>
         </div>
-        <div class="form-group">
-            <label>Descrição / Ingredientes:</label>
-            <input type="text" id="novoProdDesc" class="input-delivery" placeholder="Ex: Pão, bife, queijo, alface...">
-        </div>
-        <div class="form-group">
-            <label>Preço Grande / Único (R$):</label>
-            <input type="number" step="0.50" id="novoProdPrecoGrande" class="input-delivery" placeholder="Ex: 30.00">
-        </div>
-        <div class="form-group">
-            <label>Preço Mini (Opcional - deixe vazio se não tiver):</label>
-            <input type="number" step="0.50" id="novoProdPrecoMini" class="input-delivery" placeholder="Ex: 25.00">
-        </div>
-        <div class="form-group">
-            <label>Link da Foto (URL):</label>
-            <input type="text" id="novoProdImg" class="input-delivery" placeholder="Cole o link da imagem aqui">
-        </div>
-        <button class="btn-confirmar-lanche" onclick="salvarNovoProdutoBanco()">Salvar na Nuvem</button>
     </div>
-</div>
+    <!-- MODAL DE EDITAR PREÇOS E DADOS -->
+    <div id="modalEditarProduto" class="modal-totem">
+        <div class="modal-box">
+            <button class="btn-fechar-modal" onclick="fecharModalEditarProduto()">✕ Fechar</button>
+            <h2>Editar Produto</h2>
+            <input type="hidden" id="editProdIdKey">
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Categoria:</label>
+                <input type="text" id="editProdCategoria" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Nome do Produto:</label>
+                <input type="text" id="editProdNome" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Descrição / Ingredientes:</label>
+                <input type="text" id="editProdDesc" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Preço Grande / Único (R$):</label>
+                <input type="number" step="0.50" id="editProdPrecoGrande" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Preço Mini (R$):</label>
+                <input type="number" step="0.50" id="editProdPrecoMini" class="input-delivery">
+            </div>
+            <div class="form-group">
+                <label>Link da Foto (URL):</label>
+                <input type="text" id="editProdImg" class="input-delivery">
+            </div>
+            <button class="btn-confirmar-lanche" onclick="salvarEdicaoProdutoBanco()">Atualizar na Nuvem</button>
+        </div>
+    </div>
 
     <!-- MODAL DE GERENCIAR PREÇOS DOS ADICIONAIS -->
     <div id="modalAdicionais" class="modal-totem">
@@ -1239,6 +487,7 @@
             <button class="btn-confirmar-lanche" onclick="validarSenhaLojista()" style="margin-top: 10px;">Entrar</button>
         </div>
     </div>
+
     <!-- BARRA INFERIOR FIXA DO CARRINHO -->
     <div class="cart-bar">
         <div>
@@ -1250,7 +499,6 @@
             <button class="btn-checkout" onclick="abrirCarrinho()">🛒 Ver Carrinho (<span id="qtdItensBarra">0</span>)</button>
         </div>
     </div>
-    </dov>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAbYlLMcr-1hUPL60oKBzT5af2SMOJ2-uw",
@@ -1279,8 +527,17 @@
             "Alface": 2.00, "Coração": 7.00, "Salsicha": 3.00
         };
 
+        const produtosIniciaisPadrao = [
+            { categoria: "Lanches & Xis", nome: "Xis da Casa", desc: "Pão, Bife, Ovo, Presunto, Queijo, Milho, Ervilha, Tomate e Alface", precoG: 27.00, precoM: 22.00, img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80", pausado: false },
+            { categoria: "Lanches & Xis", nome: "Xis da Casa C/ Dog", desc: "Pão, Bife, Salsicha, Ovo, Presunto, Queijo, Batata Palha, Tomate e Alface", precoG: 30.00, precoM: 26.00, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80", pausado: false }
+        ];
+
         window.addEventListener('DOMContentLoaded', () => {
             if (!db) return;
+
+            if (sessionStorage.getItem('modoLojistaAtivo') === 'true') {
+                ativarModoLojistaVisualmente();
+            }
 
             db.ref('config/taxaTele').on('value', (snapshot) => {
                 if (snapshot.exists()) {
@@ -1294,23 +551,98 @@
             });
 
             db.ref('produtos').on('value', (snapshot) => {
-                let extrasAntigos = document.querySelectorAll('.produto-nuvem');
-                extrasAntigos.forEach(e => e.remove());
+                let containerPrincipal = document.getElementById('containerPrincipal');
+                let categoriasAntigas = containerPrincipal.querySelectorAll('.categoria-bloco');
+                categoriasAntigas.forEach(e => e.remove());
 
-                if (snapshot.exists()) {
-                    snapshot.forEach((childSnapshot) => {
-                        let idKey = childSnapshot.key;
-                        let p = childSnapshot.val();
-                        renderizarCardNaTela(idKey, p.nome, p.desc, p.precoG, p.precoM, p.img, p.pausado || false, p.categoria || "Lanches & Xis");
+                if (!snapshot.exists()) {
+                    let produtosRef = db.ref('produtos');
+                    produtosIniciaisPadrao.forEach(p => produtosRef.push(p));
+                    return;
+                }
+
+                let produtosPorCategoria = {};
+
+                snapshot.forEach((childSnapshot) => {
+                    let idKey = childSnapshot.key;
+                    let p = childSnapshot.val();
+                    let cat = p.categoria || "Lanches & Xis";
+
+                    if (!produtosPorCategoria[cat]) produtosPorCategoria[cat] = [];
+                    produtosPorCategoria[cat].push({ idKey, ...p });
+                });
+
+                for (let cat in produtosPorCategoria) {
+                    let catId = "cat_" + cat.replace(/[^a-zA-Z0-9]/g, '_');
+                    let catDiv = document.createElement('div');
+                    catDiv.className = 'categoria-bloco';
+                    catDiv.id = catId;
+                    
+                    let htmlCat = `<div class="category-title" style="margin-top:25px;">${cat}</div>`;
+                    
+                    produtosPorCategoria[cat].forEach(p => {
+                        let classePausado = (p.pausado === true || p.pausado === "true") ? ' indisponivel' : '';
+                        let ingredientesArray = p.desc ? p.desc.split(',').map(i => i.trim()) : ["Bife", "Queijo"];
+                        let ingredientesStr = JSON.stringify(ingredientesArray).replace(/"/g, '&quot;');
+                        
+                        let botoesAcao = `<button class="btn-totem" onclick="abrirTotemLanche('${p.nome}', ${p.precoG}, ${ingredientesStr}, '${p.img}')">🛠️ Pedir (R$ ${p.precoG.toFixed(2).replace('.', ',')})</button>`;
+                        if(p.precoM && p.precoM > 0) {
+                            botoesAcao = `
+                                <button class="btn-totem" onclick="abrirTotemLanche('${p.nome} (Grande)', ${p.precoG}, ${ingredientesStr}, '${p.img}')">🛠️ Grande (R$ ${p.precoG.toFixed(2).replace('.', ',')})</button>
+                                <button class="btn-totem" onclick="abrirTotemLanche('${p.nome} (Mini)', ${p.precoM}, ${ingredientesStr}, '${p.img}')">🛠️ Mini (R$ ${p.precoM.toFixed(2).replace('.', ',')})</button>
+                            `;
+                        }
+
+                        let precoTexto = (p.precoM && p.precoM > 0) ? `Grande: R$ ${Number(p.precoG).toFixed(2)} | Mini: R$ ${Number(p.precoM).toFixed(2)}` : `Valor: R$ ${Number(p.precoG).toFixed(2)}`;
+
+                        let controlesAdminHTML = "";
+                        if (document.body.classList.contains('modo-lojista-ativo')) {
+                            controlesAdminHTML = `
+                                <div class="admin-controls" style="display:flex;">
+                                    <button class="btn-admin" onclick="abrirModalEditarProduto('${p.idKey}', '${cat}', '${p.nome}', '${p.desc || ''}', ${p.precoG}, ${p.precoM || 0}, '${p.img || ''}')">✏️ Editar / Preços</button>
+                                    <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
+                                    <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
+                                </div>
+                            `;
+                        }
+
+                        htmlCat += `
+                            <div class="totem-card${classePausado}" data-firebase-id="${p.idKey}">
+                                <img src="${p.img}" class="totem-img" alt="${p.nome}">
+                                <div class="totem-content">
+                                    <div class="totem-info">
+                                        <h3>${p.nome}</h3>
+                                        <p>${p.desc}</p>
+                                        <div class="totem-preco">${precoTexto}</div>
+                                    </div>
+                                    <div class="totem-actions">
+                                        ${botoesAcao}
+                                    </div>
+                                    ${controlesAdminHTML}
+                                </div>
+                            </div>
+                        `;
                     });
+
+                    catDiv.innerHTML = htmlCat;
+                    containerPrincipal.appendChild(catDiv);
                 }
             });
-
-            if (document.body.classList.contains('modo-lojista-ativo')) {
-                injetarControlesEdicao();
-            }
         });
 
+        function ativarModoLojistaVisualmente() {
+            document.body.classList.add('modo-lojista-ativo');
+            let painel = document.getElementById('painelCriarProduto');
+            if(painel) painel.style.display = 'block';
+            
+            let btn = document.getElementById('btnModoLojista');
+            if(btn) {
+                btn.classList.add('ativo');
+                btn.innerText = "🔓 Lojista Ativo";
+            }
+        }
+    </script>
+    <script>
         function abrirTotemLanche(nome, preco, ingredientes, img) {
             lancheAtual = { 
                 nome, 
@@ -1482,12 +814,14 @@
         }
 
         function tentarAtivarModoLojista() {
-            let btn = document.getElementById('btnModoLojista');
             if(document.body.classList.contains('modo-lojista-ativo')) {
+                sessionStorage.removeItem('modoLojistaAtivo');
                 document.body.classList.remove('modo-lojista-ativo');
                 document.getElementById('painelCriarProduto').style.display = 'none';
+                let btn = document.getElementById('btnModoLojista');
                 btn.classList.remove('ativo');
                 btn.innerText = "🔑 Lojista";
+                location.reload();
             } else {
                 document.getElementById('modalSenhaLojista').style.display = 'flex';
             }
@@ -1503,93 +837,36 @@
             let senha = senhaInput.value.trim();
             
             if(senha === "Kevinmarrocos2027" || senha.toLowerCase() === "kevinmarrocos2027") {
-                document.body.classList.add('modo-lojista-ativo');
-                let painel = document.getElementById('painelCriarProduto');
-                if(painel) painel.style.display = 'block';
-                
-                let btn = document.getElementById('btnModoLojista');
-                if(btn) {
-                    btn.classList.add('ativo');
-                    btn.innerText = "🔓 Lojista Ativo";
-                }
+                sessionStorage.setItem('modoLojistaAtivo', 'true');
+                ativarModoLojistaVisualmente();
                 fecharModalSenha();
                 senhaInput.value = "";
-                injetarControlesEdicao(); 
+                alert("Modo Lojista ativado com sucesso!");
             } else {
                 alert("Senha incorreta!");
-            }
-        }
-
-        function injetarControlesEdicao() {
-            let cards = document.querySelectorAll('.totem-card');
-            cards.forEach(card => {
-                let content = card.querySelector('.totem-content');
-                if (content && !card.querySelector('.admin-controls')) {
-                    let divAdmin = document.createElement('div');
-                    divAdmin.className = 'admin-controls';
-                    divAdmin.innerHTML = `
-                        <button class="btn-admin" onclick="alterarFotoCard(this)">🖼️ Foto</button>
-                        <button class="btn-admin" onclick="alterarDadosCard(this)">✏️ Editar Preço/Nome</button>
-                        <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
-                        <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
-                    `;
-                    content.appendChild(divAdmin);
-                }
-            });
-        }
-
-        function alterarFotoCard(btn) {
-            let card = btn.closest('.totem-card');
-            let idKey = card.getAttribute('data-firebase-id');
-            let imgEl = card.querySelector('.totem-img');
-            let novaUrl = prompt("Cole o Link da nova foto:", imgEl.src);
-            if (novaUrl) {
-                imgEl.src = novaUrl;
-                if (idKey && db) db.ref('produtos/' + idKey).update({ img: novaUrl });
-            }
-        }
-
-        function alterarDadosCard(btn) {
-            let card = btn.closest('.totem-card');
-            let idKey = card.getAttribute('data-firebase-id');
-            let tituloEl = card.querySelector('h3');
-            let descEl = card.querySelector('p');
-            let precoEl = card.querySelector('.totem-preco');
-
-            let novoTitulo = prompt("Novo Nome do Produto:", tituloEl ? tituloEl.innerText : "");
-            let novaDesc = prompt("Nova Descrição / Ingredientes:", descEl ? descEl.innerText : "");
-            let novoPreco = prompt("Novo Preço (Apenas número ex: 28.00):", "");
-
-            if (novoTitulo && tituloEl) tituloEl.innerText = novoTitulo;
-            if (novaDesc !== null && descEl) descEl.innerText = novaDesc;
-            
-            let valNum = parseFloat(novoPreco);
-            if (!isNaN(valNum)) {
-                if (precoEl) precoEl.innerText = "Valor: R$ " + valNum.toFixed(2).replace('.', ',');
-            }
-
-            if (idKey && db) {
-                let dadosUpdate = {
-                    nome: tituloEl ? tituloEl.innerText : novoTitulo,
-                    desc: descEl ? descEl.innerText : novaDesc
-                };
-                if (!isNaN(valNum)) dadosUpdate.precoG = valNum;
-                
-                db.ref('produtos/' + idKey).update(dadosUpdate);
-                alert("Alterações salvas na nuvem com sucesso!");
-            } else {
-                alert("Alteração aplicada na tela!");
             }
         }
 
         function alternarPausaCard(btn) {
             let card = btn.closest('.totem-card');
             let idKey = card.getAttribute('data-firebase-id');
-            card.classList.toggle('indisponivel');
-            let estahPausado = card.classList.contains('indisponivel');
-            
+            let jaPausado = card.classList.contains('indisponivel');
+            let novoEstadoPausa = !jaPausado;
+
             if (idKey && db) {
-                db.ref('produtos/' + idKey).update({ pausado: estahPausado });
+                db.ref('produtos/' + idKey).child('pausado').set(novoEstadoPausa).then(() => {
+                    if (novoEstadoPausa) {
+                        card.classList.add('indisponivel');
+                        alert("Produto pausado com sucesso na nuvem!");
+                    } else {
+                        card.classList.remove('indisponivel');
+                        alert("Produto reativado com sucesso!");
+                    }
+                }).catch((error) => {
+                    alert("Erro ao pausar no Firebase: " + error.message);
+                });
+            } else {
+                alert("Erro: ID do produto não encontrado.");
             }
         }
 
@@ -1597,15 +874,16 @@
             let card = btn.closest('.totem-card');
             let idKey = card.getAttribute('data-firebase-id');
             
-            if (confirm("Tem certeza que deseja excluir este produto?")) {
+            if (confirm("Tem certeza absoluta que deseja excluir este produto do banco de dados?")) {
                 if (idKey && db) {
                     db.ref('produtos/' + idKey).remove().then(() => {
                         card.remove();
-                        alert("Produto excluído do banco de dados!");
+                        alert("Produto excluído do banco de dados e removido da tela!");
+                    }).catch((error) => {
+                        alert("Erro ao excluir no Firebase: " + error.message);
                     });
                 } else {
-                    card.remove();
-                    alert("Produto removido da tela!");
+                    alert("Erro: ID do produto não encontrado.");
                 }
             }
         }
@@ -1615,6 +893,7 @@
             if(novaTaxa !== null && !isNaN(parseFloat(novaTaxa))) {
                 taxaTele = parseFloat(novaTaxa);
                 if (db) db.ref('config/taxaTele').set(taxaTele);
+                alert("Taxa de tele atualizada!");
             }
         }
 
@@ -1649,7 +928,7 @@
             if (!isNaN(novoValor)) {
                 precosAdicionais[ingrediente] = novoValor;
                 if (db) db.ref('config/precosAdicionais').set(precosAdicionais);
-                alert(`Preço de "${ingrediente}" atualizado na nuvem!`);
+                alert(`Preço de "${ingrediente}" atualizado!`);
             }
         }
 
@@ -1667,7 +946,7 @@
             document.getElementById('novoAdcNome').value = "";
             document.getElementById('novoAdcPreco').value = "";
             renderizarListaAdicionaisModal();
-            alert(`Adicional "${nome}" salvo na nuvem!`);
+            alert(`Adicional "${nome}" salvo!`);
         }
 
         function abrirModalNovoProduto() {
@@ -1676,6 +955,48 @@
 
         function fecharModalNovoProduto() {
             document.getElementById('modalNovoProduto').style.display = 'none';
+        }
+
+        function abrirModalEditarProduto(idKey, categoria, nome, desc, precoG, precoM, img) {
+            document.getElementById('editProdIdKey').value = idKey;
+            document.getElementById('editProdCategoria').value = categoria;
+            document.getElementById('editProdNome').value = nome;
+            document.getElementById('editProdDesc').value = desc;
+            document.getElementById('editProdPrecoGrande').value = precoG;
+            document.getElementById('editProdPrecoMini').value = (precoM > 0) ? precoM : '';
+            document.getElementById('editProdImg').value = img;
+            
+            document.getElementById('modalEditarProduto').style.display = 'flex';
+        }
+
+        function fecharModalEditarProduto() {
+            document.getElementById('modalEditarProduto').style.display = 'none';
+        }
+
+        function salvarEdicaoProdutoBanco() {
+            let idKey = document.getElementById('editProdIdKey').value;
+            let categoria = document.getElementById('editProdCategoria').value.trim();
+            let nome = document.getElementById('editProdNome').value.trim();
+            let desc = document.getElementById('editProdDesc').value.trim();
+            let precoG = parseFloat(document.getElementById('editProdPrecoGrande').value);
+            let precoM = parseFloat(document.getElementById('editProdPrecoMini').value) || 0;
+            let img = document.getElementById('editProdImg').value.trim();
+
+            if (!idKey || !nome || isNaN(precoG)) {
+                alert("Preencha o Nome e o Preço Grande corretamente!");
+                return;
+            }
+
+            if (db) {
+                db.ref('produtos/' + idKey).update({
+                    categoria, nome, desc, precoG, precoM, img
+                }).then(() => {
+                    alert("Produto atualizado com sucesso na nuvem!");
+                    fecharModalEditarProduto();
+                }).catch((error) => {
+                    alert("Erro ao atualizar: " + error.message);
+                });
+            }
         }
 
         function verificarNovaCategoria(selectEl) {
@@ -1710,74 +1031,14 @@
                 db.ref('produtos').push({
                     categoria, nome, desc, precoG, precoM, img, pausado: false
                 });
-                alert("Produto cadastrado na categoria '" + categoria + "' com sucesso!");
+                alert("Produto cadastrado com sucesso!");
                 fecharModalNovoProduto();
                 document.getElementById('novoProdNome').value = "";
                 document.getElementById('novoProdDesc').value = "";
                 document.getElementById('novoProdPrecoGrande').value = "";
                 document.getElementById('novoProdPrecoMini').value = "";
                 document.getElementById('novoProdImg').value = "";
-            } else {
-                alert("Erro: Banco de dados não conectado.");
             }
-        }
-
-        function renderizarCardNaTela(idKey, nome, desc, precoG, precoM, img, pausado, categoria) {
-            let containerPrincipal = document.getElementById('app');
-            let catId = "cat_" + categoria.replace(/[^a-zA-Z0-9]/g, '_');
-            let catDiv = document.getElementById(catId);
-
-            if (!catDiv) {
-                catDiv = document.createElement('div');
-                catDiv.id = catId;
-                catDiv.innerHTML = `<div class="category-title" style="margin-top:25px;">${categoria}</div>`;
-                containerPrincipal.appendChild(catDiv);
-            }
-
-            let novoCard = document.createElement('div');
-            novoCard.className = 'totem-card produto-nuvem' + (pausado ? ' indisponivel' : '');
-            novoCard.setAttribute('data-firebase-id', idKey);
-            
-            let ingredientesArray = desc ? desc.split(',').map(i => i.trim()) : ["Bife", "Queijo", "Ovo"];
-            let ingredientesStr = JSON.stringify(ingredientesArray).replace(/"/g, '&quot;');
-            
-            let botoesAcao = `<button class="btn-totem" onclick="abrirTotemLanche('${nome}', ${precoG}, ${ingredientesStr}, '${img}')">🛠️ Pedir (R$ ${precoG.toFixed(2).replace('.', ',')})</button>`;
-            if(precoM > 0) {
-                botoesAcao = `
-                    <button class="btn-totem" onclick="abrirTotemLanche('${nome} (Grande)', ${precoG}, ${ingredientesStr}, '${img}')">🛠️ Grande (R$ ${precoG.toFixed(2).replace('.', ',')})</button>
-                    <button class="btn-totem" onclick="abrirTotemLanche('${nome} (Mini)', ${precoM}, ${ingredientesStr}, '${img}')">🛠️ Mini (R$ ${precoM.toFixed(2).replace('.', ',')})</button>
-                `;
-            }
-
-            let precoTexto = precoM > 0 ? `Grande: R$ ${precoG.toFixed(2)} | Mini: R$ ${precoM.toFixed(2)}` : `Valor: R$ ${precoG.toFixed(2)}`;
-
-            novoCard.innerHTML = `
-                <img src="${img}" class="totem-img" alt="${nome}">
-                <div class="totem-content">
-                    <div class="totem-info">
-                        <h3>${nome}</h3>
-                        <p>${desc}</p>
-                        <div class="totem-preco">${precoTexto}</div>
-                    </div>
-                    <div class="totem-actions">
-                        ${botoesAcao}
-                    </div>
-                </div>
-            `;
-            
-            if (document.body.classList.contains('modo-lojista-ativo')) {
-                let divAdmin = document.createElement('div');
-                divAdmin.className = 'admin-controls';
-                divAdmin.innerHTML = `
-                    <button class="btn-admin" onclick="alterarFotoCard(this)">🖼️ Foto</button>
-                    <button class="btn-admin" onclick="alterarDadosCard(this)">✏️ Editar Preço/Nome</button>
-                    <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
-                    <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
-                `;
-                novoCard.querySelector('.totem-content').appendChild(divAdmin);
-            }
-
-            catDiv.appendChild(novoCard);
         }
     </script>
 </body>
