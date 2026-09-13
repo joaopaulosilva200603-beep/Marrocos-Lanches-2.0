@@ -1100,34 +1100,47 @@
         </div>
     </div>
 
-    <!-- MODAL DE CADASTRO DE NOVO PRODUTO -->
-    <div id="modalNovoProduto" class="modal-totem">
-        <div class="modal-box">
-            <button class="btn-fechar-modal" onclick="fecharModalNovoProduto()">✕ Fechar</button>
-            <h2>➕ Cadastrar Novo Produto</h2>
-            <div class="form-group">
-                <label>Nome do Produto:</label>
-                <input type="text" id="novoProdNome" class="input-delivery" placeholder="Ex: Xis Especial">
-            </div>
-            <div class="form-group">
-                <label>Descrição / O que vem:</label>
-                <input type="text" id="novoProdDesc" class="input-delivery" placeholder="Ex: Pão, bife, queijo, bacon...">
-            </div>
-            <div class="form-group">
-                <label>Preço Principal (ou Grande):</label>
-                <input type="number" step="0.01" id="novoProdPrecoGrande" class="input-delivery" placeholder="Ex: 35.00">
-            </div>
-            <div class="form-group">
-                <label>Preço Mini / Meio (Opcional):</label>
-                <input type="number" step="0.01" id="novoProdPrecoMini" class="input-delivery" placeholder="Ex: 28.00">
-            </div>
-            <div class="form-group">
-                <label>Link da Imagem (URL):</label>
-                <input type="text" id="novoProdImg" class="input-delivery" placeholder="https://...">
-            </div>
-            <button class="btn-confirmar-lanche" onclick="salvarNovoProdutoBanco()">Salvar Produto</button>
+<!-- MODAL CADASTRAR NOVO PRODUTO -->
+<div id="modalNovoProduto" class="modal-totem">
+    <div class="modal-box">
+        <button class="btn-fechar-modal" onclick="fecharModalNovoProduto()">X Fechar</button>
+        <h2>Cadastrar Novo Produto</h2>
+        
+        <div class="form-group" style="margin-top: 15px;">
+            <label>Categoria:</label>
+            <select id="novoProdCategoria" class="input-delivery" onchange="verificarNovaCategoria(this)">
+                <option value="Lanches & Xis">🍔 Lanches & Xis</option>
+                <option value="Mini Xis Doces">🍫 Mini Xis Doces</option>
+                <option value="Cachorro-Quente & Torradas">🌭 Cachorro-Quente & Torradas</option>
+                <option value="Porções Caprichadas">🍟 Porções Caprichadas</option>
+                <option value="Pratos à La Carte">🍽️ Pratos à La Carte</option>
+                <option value="NOVA_CATEGORIA">➕ Criar Nova Categoria...</option>
+            </select>
         </div>
+
+        <div class="form-group">
+            <label>Nome do Produto:</label>
+            <input type="text" id="novoProdNome" class="input-delivery" placeholder="Ex: Xis Especial">
+        </div>
+        <div class="form-group">
+            <label>Descrição / Ingredientes:</label>
+            <input type="text" id="novoProdDesc" class="input-delivery" placeholder="Ex: Pão, bife, queijo, alface...">
+        </div>
+        <div class="form-group">
+            <label>Preço Grande / Único (R$):</label>
+            <input type="number" step="0.50" id="novoProdPrecoGrande" class="input-delivery" placeholder="Ex: 30.00">
+        </div>
+        <div class="form-group">
+            <label>Preço Mini (Opcional - deixe vazio se não tiver):</label>
+            <input type="number" step="0.50" id="novoProdPrecoMini" class="input-delivery" placeholder="Ex: 25.00">
+        </div>
+        <div class="form-group">
+            <label>Link da Foto (URL):</label>
+            <input type="text" id="novoProdImg" class="input-delivery" placeholder="Cole o link da imagem aqui">
+        </div>
+        <button class="btn-confirmar-lanche" onclick="salvarNovoProdutoBanco()">Salvar na Nuvem</button>
     </div>
+</div>
 
     <!-- MODAL DE GERENCIAR PREÇOS DOS ADICIONAIS -->
     <div id="modalAdicionais" class="modal-totem">
@@ -1254,8 +1267,7 @@
         try {
             if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-            console.log("Firebase conectado com sucesso!");
-        } catch(e) { console.log("Erro ao conectar no Firebase:", e); }
+        } catch(e) { console.log("Erro Firebase:", e); }
 
         let carrinho = [];
         let taxaTele = 5.00;
@@ -1267,11 +1279,9 @@
             "Alface": 2.00, "Coração": 7.00, "Salsicha": 3.00
         };
 
-        // --- SINCRONIZAÇÃO EM TEMPO REAL COM O FIREBASE ---
         window.addEventListener('DOMContentLoaded', () => {
             if (!db) return;
 
-            // Sincroniza Taxa de Tele
             db.ref('config/taxaTele').on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     taxaTele = snapshot.val();
@@ -1279,36 +1289,28 @@
                 }
             });
 
-            // Sincroniza Adicionais
             db.ref('config/precosAdicionais').on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    precosAdicionais = snapshot.val();
-                }
+                if (snapshot.exists()) precosAdicionais = snapshot.val();
             });
 
-            // Sincroniza apenas novos produtos cadastrados na nuvem
             db.ref('produtos').on('value', (snapshot) => {
-                let container = document.getElementById('app');
-                // Remove apenas os produtos extras adicionados via nuvem anteriormente para evitar duplicata
-                let extrasAntigos = container.querySelectorAll('.produto-nuvem');
+                let extrasAntigos = document.querySelectorAll('.produto-nuvem');
                 extrasAntigos.forEach(e => e.remove());
 
                 if (snapshot.exists()) {
                     snapshot.forEach((childSnapshot) => {
                         let idKey = childSnapshot.key;
                         let p = childSnapshot.val();
-                        renderizarCardNaTela(idKey, p.nome, p.desc, p.precoG, p.precoM, p.img, p.pausado || false);
+                        renderizarCardNaTela(idKey, p.nome, p.desc, p.precoG, p.precoM, p.img, p.pausado || false, p.categoria || "Lanches & Xis");
                     });
                 }
             });
 
-            // Se o lojista já estiver logado, injeta os botões nos cards originais
             if (document.body.classList.contains('modo-lojista-ativo')) {
                 injetarControlesEdicao();
             }
         });
 
-        // LÓGICA DO TOTEM E CUSTOMIZAÇÃO
         function abrirTotemLanche(nome, preco, ingredientes, img) {
             lancheAtual = { 
                 nome, 
@@ -1329,9 +1331,7 @@
 
             lancheAtual.ingredientes.forEach((item, index) => {
                 let precoUnitario = precosAdicionais[item.nome] || 3.00;
-                if (item.qtd > 1) {
-                    valorExtraTotal += (item.qtd - 1) * precoUnitario;
-                }
+                if (item.qtd > 1) valorExtraTotal += (item.qtd - 1) * precoUnitario;
 
                 html += `
                     <div class="ingrediente-linha">
@@ -1381,7 +1381,6 @@
             alert("Adicionado ao carrinho com sucesso! 🛒");
         }
 
-        // CARRINHO E WHATSAPP OFICIAL
         function atualizarCarrinhoBarra() {
             let total = 0;
             carrinho.forEach(item => total += item.precoBase);
@@ -1482,7 +1481,6 @@
             window.open(urlWp, '_blank');
         }
 
-        // PAINEL DO LOJISTA E SENHA OFICIAL
         function tentarAtivarModoLojista() {
             let btn = document.getElementById('btnModoLojista');
             if(document.body.classList.contains('modo-lojista-ativo')) {
@@ -1502,9 +1500,8 @@
         function validarSenhaLojista() {
             let senhaInput = document.getElementById('senhaLojistaInput');
             if (!senhaInput) return;
-            let senha = senhaInput.value.trim(); // .trim() remove espaços sem querer
+            let senha = senhaInput.value.trim();
             
-            // Aceita tanto a senha exata quanto a versão em minúsculas para evitar falhas
             if(senha === "Kevinmarrocos2027" || senha.toLowerCase() === "kevinmarrocos2027") {
                 document.body.classList.add('modo-lojista-ativo');
                 let painel = document.getElementById('painelCriarProduto');
@@ -1532,8 +1529,9 @@
                     divAdmin.className = 'admin-controls';
                     divAdmin.innerHTML = `
                         <button class="btn-admin" onclick="alterarFotoCard(this)">🖼️ Foto</button>
-                        <button class="btn-admin" onclick="alterarDadosCard(this)">✏️ Editar Tudo</button>
-                        <button class="btn-admin" onclick="alternarPausaCard(this)">🚫 Pausar</button>
+                        <button class="btn-admin" onclick="alterarDadosCard(this)">✏️ Editar Preço/Nome</button>
+                        <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
+                        <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
                     `;
                     content.appendChild(divAdmin);
                 }
@@ -1559,20 +1557,28 @@
             let precoEl = card.querySelector('.totem-preco');
 
             let novoTitulo = prompt("Novo Nome do Produto:", tituloEl ? tituloEl.innerText : "");
-            if (novoTitulo && tituloEl) tituloEl.innerText = novoTitulo;
-
             let novaDesc = prompt("Nova Descrição / Ingredientes:", descEl ? descEl.innerText : "");
-            if (novaDesc !== null && descEl) descEl.innerText = novaDesc;
+            let novoPreco = prompt("Novo Preço (Apenas número ex: 28.00):", "");
 
-            let novoPreco = prompt("Novo Preço Exibido:", precoEl ? precoEl.innerText : "");
-            if (novoPreco && precoEl) precoEl.innerText = novoPreco;
+            if (novoTitulo && tituloEl) tituloEl.innerText = novoTitulo;
+            if (novaDesc !== null && descEl) descEl.innerText = novaDesc;
+            
+            let valNum = parseFloat(novoPreco);
+            if (!isNaN(valNum)) {
+                if (precoEl) precoEl.innerText = "Valor: R$ " + valNum.toFixed(2).replace('.', ',');
+            }
 
             if (idKey && db) {
-                db.ref('produtos/' + idKey).update({
-                    nome: tituloEl.innerText,
-                    desc: descEl ? descEl.innerText : "",
-                    precoG: parseFloat(novoPreco) || 30.00
-                });
+                let dadosUpdate = {
+                    nome: tituloEl ? tituloEl.innerText : novoTitulo,
+                    desc: descEl ? descEl.innerText : novaDesc
+                };
+                if (!isNaN(valNum)) dadosUpdate.precoG = valNum;
+                
+                db.ref('produtos/' + idKey).update(dadosUpdate);
+                alert("Alterações salvas na nuvem com sucesso!");
+            } else {
+                alert("Alteração aplicada na tela!");
             }
         }
 
@@ -1587,6 +1593,23 @@
             }
         }
 
+        function excluirProdutoCard(btn) {
+            let card = btn.closest('.totem-card');
+            let idKey = card.getAttribute('data-firebase-id');
+            
+            if (confirm("Tem certeza que deseja excluir este produto?")) {
+                if (idKey && db) {
+                    db.ref('produtos/' + idKey).remove().then(() => {
+                        card.remove();
+                        alert("Produto excluído do banco de dados!");
+                    });
+                } else {
+                    card.remove();
+                    alert("Produto removido da tela!");
+                }
+            }
+        }
+
         function alterarTaxaTeleLojista() {
             let novaTaxa = prompt("Digite a nova Taxa de Entrega (Ex: 7.00):", taxaTele);
             if(novaTaxa !== null && !isNaN(parseFloat(novaTaxa))) {
@@ -1595,7 +1618,6 @@
             }
         }
 
-        // GERENCIAR PREÇOS DOS ADICIONAIS NO FIREBASE
         function gerenciarPrecosAdicionais() {
             renderizarListaAdicionaisModal();
             document.getElementById('modalAdicionais').style.display = 'flex';
@@ -1648,7 +1670,6 @@
             alert(`Adicional "${nome}" salvo na nuvem!`);
         }
 
-     // CADASTRO DE NOVO PRODUTO NO FIREBASE
         function abrirModalNovoProduto() {
             document.getElementById('modalNovoProduto').style.display = 'flex';
         }
@@ -1657,7 +1678,23 @@
             document.getElementById('modalNovoProduto').style.display = 'none';
         }
 
+        function verificarNovaCategoria(selectEl) {
+            if (selectEl.value === "NOVA_CATEGORIA") {
+                let novaCat = prompt("Digite o nome da Nova Categoria (Ex: Bebidas, Sobremesas):");
+                if (novaCat && novaCat.trim() !== "") {
+                    let opt = document.createElement('option');
+                    opt.value = novaCat.trim();
+                    opt.text = novaCat.trim();
+                    selectEl.insertBefore(opt, selectEl.lastElementChild);
+                    selectEl.value = novaCat.trim();
+                } else {
+                    selectEl.value = "Lanches & Xis";
+                }
+            }
+        }
+
         function salvarNovoProdutoBanco() {
+            let categoria = document.getElementById('novoProdCategoria').value;
             let nome = document.getElementById('novoProdNome').value.trim();
             let desc = document.getElementById('novoProdDesc').value.trim();
             let precoG = parseFloat(document.getElementById('novoProdPrecoGrande').value);
@@ -1671,9 +1708,9 @@
 
             if (db) {
                 db.ref('produtos').push({
-                    nome, desc, precoG, precoM, img, pausado: false
+                    categoria, nome, desc, precoG, precoM, img, pausado: false
                 });
-                alert("Produto cadastrado e salvo na nuvem com sucesso!");
+                alert("Produto cadastrado na categoria '" + categoria + "' com sucesso!");
                 fecharModalNovoProduto();
                 document.getElementById('novoProdNome').value = "";
                 document.getElementById('novoProdDesc').value = "";
@@ -1685,9 +1722,18 @@
             }
         }
 
-        // RENDERIZAR CARD DA NUVEM
-        function renderizarCardNaTela(idKey, nome, desc, precoG, precoM, img, pausado) {
-            let appDiv = document.getElementById('app');
+        function renderizarCardNaTela(idKey, nome, desc, precoG, precoM, img, pausado, categoria) {
+            let containerPrincipal = document.getElementById('app');
+            let catId = "cat_" + categoria.replace(/[^a-zA-Z0-9]/g, '_');
+            let catDiv = document.getElementById(catId);
+
+            if (!catDiv) {
+                catDiv = document.createElement('div');
+                catDiv.id = catId;
+                catDiv.innerHTML = `<div class="category-title" style="margin-top:25px;">${categoria}</div>`;
+                containerPrincipal.appendChild(catDiv);
+            }
+
             let novoCard = document.createElement('div');
             novoCard.className = 'totem-card produto-nuvem' + (pausado ? ' indisponivel' : '');
             novoCard.setAttribute('data-firebase-id', idKey);
@@ -1724,13 +1770,14 @@
                 divAdmin.className = 'admin-controls';
                 divAdmin.innerHTML = `
                     <button class="btn-admin" onclick="alterarFotoCard(this)">🖼️ Foto</button>
-                    <button class="btn-admin" onclick="alterarDadosCard(this)">✏️ Editar Tudo</button>
-                    <button class="btn-admin" onclick="alternarPausaCard(this)">🚫 Pausar</button>
+                    <button class="btn-admin" onclick="alterarDadosCard(this)">✏️ Editar Preço/Nome</button>
+                    <button class="btn-admin" onclick="alternarPausaCard(this)" style="background:#b45309;">🚫 Pausar</button>
+                    <button class="btn-admin" onclick="excluirProdutoCard(this)" style="background:#dc2626;">🗑️ Excluir</button>
                 `;
                 novoCard.querySelector('.totem-content').appendChild(divAdmin);
             }
 
-            appDiv.appendChild(novoCard);
+            catDiv.appendChild(novoCard);
         }
     </script>
 </body>
